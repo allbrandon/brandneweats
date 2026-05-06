@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PostCard from "@/components/blog/PostCard";
-import { getPostsByDestination } from "@/lib/queries";
-
-const VALID_DESTINATIONS = ["vietnam", "china", "japan"];
+import { getPostsByDestination, getAllDestinations } from "@/lib/queries";
 
 interface PageProps {
   params: Promise<{ country: string }>;
 }
 
 export async function generateStaticParams() {
-  return VALID_DESTINATIONS.map((country) => ({ country }));
+  try {
+    const destinations = await getAllDestinations();
+    return destinations.map((d: any) => ({ country: d.slug.current }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { country } = await params;
-  if (!VALID_DESTINATIONS.includes(country)) return {};
   const label = country.charAt(0).toUpperCase() + country.slice(1);
   return {
     title: `${label} Travel Guides`,
@@ -25,9 +27,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function DestinationCountryPage({ params }: PageProps) {
   const { country } = await params;
-  if (!VALID_DESTINATIONS.includes(country)) notFound();
-
-  const label = country.charAt(0).toUpperCase() + country.slice(1);
 
   let posts: any[] = [];
   try {
@@ -36,13 +35,15 @@ export default async function DestinationCountryPage({ params }: PageProps) {
     posts = [];
   }
 
+  // 404 only if there are genuinely no posts AND no matching destination
+  // (destination might exist but just have no posts yet — still show the page)
+  const label = country.charAt(0).toUpperCase() + country.slice(1);
+
   return (
     <div className="bg-brand-bg min-h-screen">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="mb-2">
-          <span className="font-mono text-sm text-gray-500">
-            Destinations /
-          </span>
+          <span className="font-mono text-sm text-gray-500">Destinations /</span>
         </div>
         <h1 className="font-mono font-bold text-4xl text-brand-black mb-2 uppercase tracking-tight">
           {label}

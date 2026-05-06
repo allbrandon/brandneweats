@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getAllDestinations } from "@/lib/queries";
 
 export const metadata: Metadata = {
   openGraph: {
@@ -23,14 +24,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function FrontendLayout({
+export default async function FrontendLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let destinations: any[] = [];
+  try {
+    destinations = await getAllDestinations();
+  } catch {
+    destinations = [];
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar destinations={destinations} />
       <main className="flex-1">{children}</main>
       <Footer />
       <script

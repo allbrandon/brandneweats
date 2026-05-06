@@ -65,6 +65,17 @@ export async function getPostsByDestination(destination: string) {
   );
 }
 
+export async function getAllDestinations() {
+  return client.fetch(
+    groq`*[_type == "destination"] | order(order asc, name asc) {
+      _id,
+      name,
+      slug,
+      "coverImage": coverImage{ asset->{_id, url}, alt, hotspot, crop }
+    }`
+  );
+}
+
 export async function getSiteSettings() {
   return client.fetch(
     groq`*[_type == "siteSettings" && _id == "siteSettings"][0] {
