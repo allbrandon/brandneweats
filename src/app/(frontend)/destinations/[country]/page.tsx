@@ -51,9 +51,9 @@ export default async function DestinationCountryPage({ params }: PageProps) {
     <div className="relative bg-brand-bg overflow-hidden">
 
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="text-center px-6 pt-16 pb-10 max-w-3xl mx-auto">
+      <section className="text-center px-6 pt-12 pb-6 max-w-3xl mx-auto">
         <h1
-          className="font-mono font-bold text-7xl md:text-8xl text-brand-primary mb-5 tracking-tight"
+          className="font-mono font-bold text-6xl md:text-7xl text-brand-primary mb-4 tracking-tight"
         >
           {label}
         </h1>
@@ -66,15 +66,15 @@ export default async function DestinationCountryPage({ params }: PageProps) {
 
       {/* ── Postcard ─────────────────────────────────────── */}
       {coverImageUrl && (
-        <section className="max-w-3xl mx-auto px-6 mb-16">
+        <section className="max-w-2xl mx-auto px-6 mb-10">
           <div className="bg-white border-[3px] border-gray-100 shadow-[6px_8px_24px_rgba(0,0,0,0.07)] p-3">
-            <div className="relative aspect-video overflow-hidden">
+            <div className="relative aspect-[3/2] overflow-hidden">
               <Image
                 src={coverImageUrl}
                 alt={destination.coverImage?.alt || label}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 600px"
+                sizes="(max-width: 768px) 100vw, 700px"
               />
             </div>
             {destination?.coverCaption && (
