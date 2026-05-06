@@ -10,18 +10,19 @@ export async function POST(req: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  try {
-    await resend.emails.send({
-      from: "BrandNewEats Contact <hello@contact.brandneweats.com>",
-      to: "brandneweats@gmail.com",
-      replyTo: email,
-      subject: `New message from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
-    });
+  const { data, error } = await resend.emails.send({
+    from: "BrandNewEats Contact <hello@contact.brandneweats.com>",
+    to: "brandneweats@gmail.com",
+    replyTo: email,
+    subject: `New message from ${name}`,
+    text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+  });
 
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("Resend error:", err);
-    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+  if (error) {
+    console.error("Resend error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  console.log("Resend success, email id:", data?.id);
+  return NextResponse.json({ ok: true });
 }
