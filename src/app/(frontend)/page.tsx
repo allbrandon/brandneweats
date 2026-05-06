@@ -92,8 +92,8 @@ export default async function HomePage() {
         </h2>
         {latestPosts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {latestPosts.map((post) => (
-              <PostCard key={post._id} post={post} />
+            {latestPosts.map((post, i) => (
+              <PostCard key={post._id} post={post} index={i} />
             ))}
           </div>
         ) : (
@@ -142,22 +142,27 @@ export default async function HomePage() {
               unlocking stories, culture and brand new cuisine.
             </p>
           </div>
-          <div className="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden relative bg-gray-100">
-            {profileImageUrl ? (
-              <Image
-                src={profileImageUrl}
-                alt={settings.profileImage?.alt || "Brandon Nguyen"}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 256px, 320px"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <p className="font-mono text-sm text-gray-500 text-center px-4">
-                  Upload profile photo in Studio → Site Settings
-                </p>
-              </div>
-            )}
+          <div
+            className="flex-shrink-0 bg-white border border-gray-200 shadow-[6px_8px_24px_rgba(0,0,0,0.10)] p-3 pb-10"
+            style={{ transform: "rotate(-2deg)" }}
+          >
+            <div className="relative w-56 h-56 md:w-72 md:h-72 overflow-hidden bg-gray-100">
+              {profileImageUrl ? (
+                <Image
+                  src={profileImageUrl}
+                  alt={settings.profileImage?.alt || "Brandon Nguyen"}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 224px, 288px"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <p className="font-mono text-sm text-gray-500 text-center px-4">
+                    Upload profile photo in Studio → Site Settings
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>

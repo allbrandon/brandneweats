@@ -82,6 +82,15 @@ export async function getDestinationBySlug(slug: string) {
       _id,
       name,
       slug,
+      tagline,
+      coverCaption,
+      "coverImage": coverImage{ asset->{_id, url}, alt, hotspot, crop },
+      essentials{ bestTimeToVisit, currency, mustTry },
+      "cities": cities[]{
+        name,
+        isMustSee,
+        "image": image{ asset->{_id, url}, alt, hotspot, crop }
+      },
       "backgroundImage": backgroundImage{
         asset->{_id, url, metadata{dimensions{width, height}}},
         alt, hotspot, crop

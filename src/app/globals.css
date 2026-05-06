@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Epilogue:wght@700;800;900&family=Inter:wght@400;500;600&display=swap');
 
 @font-face {
   font-family: 'Saigon Classique';
@@ -20,7 +20,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Courier Prime", "Courier New", monospace;
+  font-family: "Inter", sans-serif;
 }
 
 @layer utilities {

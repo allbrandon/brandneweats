@@ -18,7 +18,7 @@ export const portableTextComponents: PortableTextComponents = {
             />
           </div>
           {value.caption && (
-            <figcaption className="text-center text-sm text-gray-500 mt-2 font-mono italic">
+            <figcaption className="text-center text-sm text-gray-500 mt-2 italic">
               {value.caption}
             </figcaption>
           )}
@@ -48,24 +48,24 @@ export const portableTextComponents: PortableTextComponents = {
       </h4>
     ),
     normal: ({ children }) => (
-      <p className="font-mono text-base text-brand-black leading-relaxed mb-5">
+      <p className="text-base text-brand-black leading-relaxed mb-5">
         {children}
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-brand-yellow pl-5 my-6 italic font-mono text-gray-700">
+      <blockquote className="border-l-4 border-brand-yellow pl-5 my-6 italic text-gray-700">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc list-outside pl-6 mb-5 space-y-2 font-mono text-brand-black">
+      <ul className="list-disc list-outside pl-6 mb-5 space-y-2 text-brand-black">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal list-outside pl-6 mb-5 space-y-2 font-mono text-brand-black">
+      <ol className="list-decimal list-outside pl-6 mb-5 space-y-2 text-brand-black">
         {children}
       </ol>
     ),
