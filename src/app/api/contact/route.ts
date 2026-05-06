@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const { name, email, message } = await req.json();
@@ -7,9 +10,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
-  // Forward to Vercel email or any service you wire up
-  // For now, log and return success (wire up Resend, SendGrid, etc.)
-  console.log("Contact form submission:", { name, email, message });
+  try {
+    await resend.emails.send({
+      from: "BrandNewEats Contact <onboarding@resend.dev>",
+      to: "brandneweats@gmail.com",
+      replyTo: email,
+      subject: `New message from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+    });
 
-  return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Resend error:", err);
+    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+  }
 }

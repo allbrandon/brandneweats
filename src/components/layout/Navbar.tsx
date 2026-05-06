@@ -23,9 +23,11 @@ export default function Navbar({ destinations = [] }: NavbarProps) {
         {/* Logo */}
         <Link
           href="/"
-          className="font-mono font-bold text-xl md:text-2xl tracking-tight text-brand-black uppercase"
+          className="text-4xl md:text-5xl tracking-tighter leading-snug text-brand-black"
+          style={{ fontFamily: "'Saigon Classique'" }}
         >
-          BRANDNEWEATS
+          <span className="hidden md:inline">brandneweats</span>
+          <span className="md:hidden">bne</span>
         </Link>
 
         {/* Desktop nav */}

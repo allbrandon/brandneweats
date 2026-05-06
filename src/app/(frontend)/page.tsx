@@ -55,18 +55,18 @@ export default async function HomePage() {
         </div>
         <div className="flex-1 flex justify-center md:justify-end">
           {heroImageUrl ? (
-            <div className="relative w-72 h-72 md:w-96 md:h-96">
+            <div className="relative w-[345px] h-[345px] md:w-[460px] md:h-[460px]">
               <Image
                 src={heroImageUrl}
                 alt={settings.heroImage?.alt || "BrandNewEats hero"}
                 fill
                 priority
                 className="object-contain"
-                sizes="(max-width: 768px) 288px, 384px"
+                sizes="(max-width: 768px) 345px, 460px"
               />
             </div>
           ) : (
-            <div className="relative w-72 h-72 md:w-96 md:h-96">
+            <div className="relative w-[345px] h-[345px] md:w-[460px] md:h-[460px]">
               <div className="absolute inset-0 rounded-full bg-yellow-100 opacity-60 blur-2xl" />
               <div className="relative w-full h-full flex items-center justify-center">
                 <div className="text-center">
@@ -131,10 +131,13 @@ export default async function HomePage() {
           <div className="flex-1">
             <h2 className="font-mono font-bold text-3xl text-brand-black mb-4">
               Hi, I&apos;m{" "}
-              <span className="bg-brand-yellow px-1">{aboutName}</span>!
+              <span className="bg-brand-yellow px-1">Brandon</span>!
             </h2>
             <p className="font-mono text-base text-brand-black leading-relaxed">
-              {aboutBio}
+              A Vietnamese-Australian currently based in both Vietnam and
+              Australia. Since 2025, I quit my job to chase my passions – to
+              travel &amp; create content full time. Travelling to me is about
+              unlocking stories, culture and brand new cuisine.
             </p>
           </div>
           <div className="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden relative bg-gray-100">
