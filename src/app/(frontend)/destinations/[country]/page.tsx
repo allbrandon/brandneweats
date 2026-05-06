@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import PostCard from "@/components/blog/PostCard";
-import { getPostsByDestination, getAllDestinations } from "@/lib/queries";
+import PageBackground from "@/components/PageBackground";
+import { getPostsByDestination, getAllDestinations, getDestinationBySlug } from "@/lib/queries";
 
 interface PageProps {
   params: Promise<{ country: string }>;
@@ -29,19 +29,22 @@ export default async function DestinationCountryPage({ params }: PageProps) {
   const { country } = await params;
 
   let posts: any[] = [];
+  let destination: any = null;
   try {
-    posts = await getPostsByDestination(country);
+    [posts, destination] = await Promise.all([
+      getPostsByDestination(country),
+      getDestinationBySlug(country),
+    ]);
   } catch {
     posts = [];
   }
 
-  // 404 only if there are genuinely no posts AND no matching destination
-  // (destination might exist but just have no posts yet — still show the page)
   const label = country.charAt(0).toUpperCase() + country.slice(1);
 
   return (
-    <div className="bg-brand-bg min-h-screen">
-      <div className="max-w-6xl mx-auto px-6 py-12">
+    <div className="relative bg-brand-bg min-h-screen overflow-hidden">
+      <PageBackground image={destination?.backgroundImage ?? null} />
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
         <div className="mb-2">
           <span className="font-mono text-sm text-gray-500">Destinations /</span>
         </div>

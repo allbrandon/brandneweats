@@ -32,6 +32,16 @@ export const destinationType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "backgroundImage",
+      title: "Page Background Image",
+      description: "Decorative illustration shown at the bottom of this destination's page.",
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        { name: "alt", type: "string", title: "Alternative text", initialValue: "" },
+      ],
+    }),
+    defineField({
       name: "order",
       title: "Display Order",
       description: "Lower numbers appear first.",

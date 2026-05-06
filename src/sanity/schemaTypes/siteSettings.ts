@@ -9,6 +9,7 @@ export const siteSettingsType = defineType({
   groups: [
     { name: "hero", title: "Hero Section" },
     { name: "about", title: "About Section" },
+    { name: "backgrounds", title: "Page Backgrounds" },
   ],
   fields: [
     // ── Hero ──────────────────────────────────────────────
@@ -72,6 +73,32 @@ export const siteSettingsType = defineType({
       fields: [
         { name: "alt", type: "string", title: "Alternative text", initialValue: "Brandon Nguyen" },
       ],
+    }),
+
+    // ── Page Backgrounds ──────────────────────────────────
+    defineField({
+      name: "homeBackground",
+      title: "Home Page Background",
+      type: "image",
+      group: "backgrounds",
+      options: { hotspot: true },
+      fields: [{ name: "alt", type: "string", title: "Alternative text", initialValue: "" }],
+    }),
+    defineField({
+      name: "blogBackground",
+      title: "Blog Page Background",
+      type: "image",
+      group: "backgrounds",
+      options: { hotspot: true },
+      fields: [{ name: "alt", type: "string", title: "Alternative text", initialValue: "" }],
+    }),
+    defineField({
+      name: "contactBackground",
+      title: "Contact Page Background",
+      type: "image",
+      group: "backgrounds",
+      options: { hotspot: true },
+      fields: [{ name: "alt", type: "string", title: "Alternative text", initialValue: "" }],
     }),
   ],
   preview: {

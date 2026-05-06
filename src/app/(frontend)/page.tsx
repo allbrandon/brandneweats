@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import PostCard from "@/components/blog/PostCard";
+import PageBackground from "@/components/PageBackground";
 import { getLatestPosts, getSiteSettings } from "@/lib/queries";
 import { urlForImage } from "@/lib/sanity.image";
 
@@ -33,7 +34,8 @@ export default async function HomePage() {
   const aboutBio = settings?.aboutBio || "A Vietnamese-Australian currently based in both Vietnam and Australia. Since 2025, I quit my job to chase my passions – to travel & create content full time. Travelling to me is about unlocking stories, culture and brand new cuisine.";
 
   return (
-    <div className="bg-brand-bg">
+    <div className="relative bg-brand-bg overflow-hidden">
+      <PageBackground image={settings?.homeBackground ?? null} />
       {/* Hero section */}
       <section className="max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12">
         <div className="flex-1 max-w-lg">

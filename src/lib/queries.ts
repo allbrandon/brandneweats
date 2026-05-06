@@ -76,6 +76,21 @@ export async function getAllDestinations() {
   );
 }
 
+export async function getDestinationBySlug(slug: string) {
+  return client.fetch(
+    groq`*[_type == "destination" && slug.current == $slug][0] {
+      _id,
+      name,
+      slug,
+      "backgroundImage": backgroundImage{
+        asset->{_id, url, metadata{dimensions{width, height}}},
+        alt, hotspot, crop
+      }
+    }`,
+    { slug }
+  );
+}
+
 export async function getSiteSettings() {
   return client.fetch(
     groq`*[_type == "siteSettings" && _id == "siteSettings"][0] {
@@ -85,7 +100,10 @@ export async function getSiteSettings() {
       "heroImage": heroImage{ asset->{_id, url}, alt, hotspot, crop },
       aboutName,
       aboutBio,
-      "profileImage": profileImage{ asset->{_id, url}, alt, hotspot, crop }
+      "profileImage": profileImage{ asset->{_id, url}, alt, hotspot, crop },
+      "homeBackground": homeBackground{ asset->{_id, url, metadata{dimensions{width, height}}}, alt, hotspot, crop },
+      "blogBackground": blogBackground{ asset->{_id, url, metadata{dimensions{width, height}}}, alt, hotspot, crop },
+      "contactBackground": contactBackground{ asset->{_id, url, metadata{dimensions{width, height}}}, alt, hotspot, crop }
     }`
   );
 }
