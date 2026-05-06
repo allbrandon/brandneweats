@@ -31,4 +31,13 @@ export const structure: StructureResolver = (S) =>
       S.listItem()
         .title("Tags")
         .child(S.documentTypeList("tag").title("Tags")),
+      S.divider(),
+      // Singleton — opens directly into the one siteSettings document
+      S.listItem()
+        .title("Site Settings")
+        .child(
+          S.document()
+            .schemaType("siteSettings")
+            .documentId("siteSettings")
+        ),
     ]);

@@ -64,3 +64,17 @@ export async function getPostsByDestination(destination: string) {
     { destination }
   );
 }
+
+export async function getSiteSettings() {
+  return client.fetch(
+    groq`*[_type == "siteSettings" && _id == "siteSettings"][0] {
+      heroHeading,
+      heroSubtext,
+      heroTagline,
+      "heroImage": heroImage{ asset->{_id, url}, alt, hotspot, crop },
+      aboutName,
+      aboutBio,
+      "profileImage": profileImage{ asset->{_id, url}, alt, hotspot, crop }
+    }`
+  );
+}
