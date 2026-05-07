@@ -27,7 +27,7 @@ export default async function DestinationsPage() {
     <div className="relative bg-brand-bg min-h-screen overflow-hidden">
       <PageBackground image={settings?.destinationsBackground ?? null} />
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
-        <h1 className="font-mono font-bold text-4xl text-brand-black mb-2 uppercase tracking-tight">
+        <h1 className="font-mono font-bold text-4xl text-brand-black mb-2 tracking-tight">
           Destinations
         </h1>
         <hr className="border-gray-300 mb-10" />
