@@ -71,6 +71,7 @@ export async function getAllDestinations() {
       _id,
       name,
       slug,
+      tagline,
       "coverImage": coverImage{ asset->{_id, url}, alt, hotspot, crop }
     }`
   );
@@ -112,6 +113,7 @@ export async function getSiteSettings() {
       "profileImage": profileImage{ asset->{_id, url}, alt, hotspot, crop },
       "homeBackground": homeBackground{ asset->{_id, url, metadata{dimensions{width, height}}}, alt, hotspot, crop },
       "blogBackground": blogBackground{ asset->{_id, url, metadata{dimensions{width, height}}}, alt, hotspot, crop },
+      "destinationsBackground": destinationsBackground{ asset->{_id, url, metadata{dimensions{width, height}}}, alt, hotspot, crop },
       "contactBackground": contactBackground{ asset->{_id, url, metadata{dimensions{width, height}}}, alt, hotspot, crop }
     }`
   );
