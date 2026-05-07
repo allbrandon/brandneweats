@@ -133,13 +133,10 @@ export default async function HomePage() {
           <div className="flex-1">
             <h2 className="font-mono font-bold text-3xl text-brand-black mb-4">
               Hi, I&apos;m{" "}
-              <span className="bg-brand-yellow px-1">Brandon</span>!
+              <span className="bg-brand-yellow px-1">{aboutName}</span>!
             </h2>
             <p className="font-mono text-base text-brand-black leading-relaxed">
-              A Vietnamese-Australian currently based in both Vietnam and
-              Australia. Since 2025, I quit my job to chase my passions – to
-              travel &amp; create content full time. Travelling to me is about
-              unlocking stories, culture and brand new cuisine.
+              {aboutBio}
             </p>
           </div>
           <div
