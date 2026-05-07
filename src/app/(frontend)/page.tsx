@@ -5,7 +5,7 @@ import PageBackground from "@/components/PageBackground";
 import { getLatestPosts, getSiteSettings } from "@/lib/queries";
 import { urlForImage } from "@/lib/sanity.image";
 
-export const revalidate = false;
+export const revalidate = 60;
 
 export default async function HomePage() {
   let latestPosts: any[] = [];

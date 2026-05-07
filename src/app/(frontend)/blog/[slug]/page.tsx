@@ -4,7 +4,7 @@ import PostHeader from "@/components/blog/PostHeader";
 import PostBody from "@/components/blog/PostBody";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/queries";
 
-export const revalidate = false;
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { getAllDestinations } from "@/lib/queries";
 import { urlForImage } from "@/lib/sanity.image";
 
-export const revalidate = false;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Destinations",

@@ -3,7 +3,7 @@ import PostCard from "@/components/blog/PostCard";
 import PageBackground from "@/components/PageBackground";
 import { getAllPosts, getSiteSettings } from "@/lib/queries";
 
-export const revalidate = false;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Blog",
