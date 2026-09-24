@@ -27,7 +27,19 @@ export interface ItineraryDay {
 
 export default function CityItinerary({ days }: { days: ItineraryDay[] }) {
   const [selectedDay, setSelectedDay] = useState(0);
+  const dayHeadingRef = useRef<HTMLHeadingElement>(null);
   const day = days[selectedDay];
+
+  const goToDay = (index: number) => {
+    setSelectedDay(index);
+    requestAnimationFrame(() => {
+      dayHeadingRef.current?.focus({ preventScroll: true });
+      dayHeadingRef.current?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        block: "start",
+      });
+    });
+  };
 
   return (
     <section className="mt-14 md:mt-20">
@@ -40,18 +52,18 @@ export default function CityItinerary({ days }: { days: ItineraryDay[] }) {
             id={`day-tab-${index}`}
             aria-controls={`day-panel-${index}`}
             aria-selected={selectedDay === index}
+            aria-label={`Day ${index + 1}: ${item.tabTitle}`}
             onClick={() => setSelectedDay(index)}
-            className={`shrink-0 rounded-md px-4 py-3 font-mono text-sm font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta ${selectedDay === index ? "bg-brand-yellow text-brand-black" : "bg-[#f0eee8] text-brand-muted hover:bg-[#e9e4d7]"}`}
+            className={`min-w-20 flex-1 rounded-md px-2 py-3 font-mono text-sm font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta sm:flex-none sm:px-5 ${selectedDay === index ? "bg-brand-yellow text-brand-black" : "bg-[#f0eee8] text-brand-muted hover:bg-[#e9e4d7]"}`}
           >
-            <span className="mr-2 text-brand-primary" aria-hidden="true">✳</span>
-            Day {index + 1}: {item.tabTitle}
+            Day {index + 1}
           </button>
         ))}
       </div>
 
       <div role="tabpanel" id={`day-panel-${selectedDay}`} aria-labelledby={`day-tab-${selectedDay}`} className="max-w-3xl pt-11 md:pt-14">
         <p className="mb-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-brand-terracotta">Day {String(selectedDay + 1).padStart(2, "0")} / {String(days.length).padStart(2, "0")}</p>
-        <h2 className="font-display text-3xl font-black uppercase leading-tight tracking-tight text-brand-black md:text-4xl">{day.heading}</h2>
+        <h2 ref={dayHeadingRef} tabIndex={-1} className="scroll-mt-6 font-display text-3xl font-black uppercase leading-tight tracking-tight text-brand-black outline-none md:text-4xl">{day.heading}</h2>
         {day.description && <p className="mt-3 max-w-2xl font-mono text-sm leading-relaxed text-brand-muted">{day.description}</p>}
 
         <div className="mt-9 space-y-8">
@@ -60,6 +72,31 @@ export default function CityItinerary({ days }: { days: ItineraryDay[] }) {
           ))}
           {!day.activities?.length && <p className="font-mono text-sm text-brand-muted">Activities are coming soon.</p>}
         </div>
+
+        {days.length > 1 && (
+          <nav aria-label="Itinerary day navigation" className="mt-12 flex flex-wrap items-stretch justify-between gap-3 border-t border-[#d8cfbd] pt-6">
+            {selectedDay > 0 && (
+              <button
+                type="button"
+                onClick={() => goToDay(selectedDay - 1)}
+                className="w-full rounded-md border-2 border-brand-black bg-white px-5 py-3 text-left font-mono text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta sm:w-auto"
+              >
+                <span className="block text-xs font-bold uppercase tracking-wider">← Previous day</span>
+                <span className="mt-1 block text-xs">Day {selectedDay}: {days[selectedDay - 1].tabTitle}</span>
+              </button>
+            )}
+            {selectedDay < days.length - 1 && (
+              <button
+                type="button"
+                onClick={() => goToDay(selectedDay + 1)}
+                className="ml-auto w-full rounded-md border-2 border-brand-black bg-brand-yellow px-5 py-3 text-left font-mono text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta sm:w-auto"
+              >
+                <span className="block text-xs font-bold uppercase tracking-wider">Next day →</span>
+                <span className="mt-1 block text-xs">Day {selectedDay + 2}: {days[selectedDay + 1].tabTitle}</span>
+              </button>
+            )}
+          </nav>
+        )}
       </div>
     </section>
   );
@@ -67,6 +104,8 @@ export default function CityItinerary({ days }: { days: ItineraryDay[] }) {
 
 function ActivityCard({ activity, index }: { activity: Activity; index: number }) {
   const description = [activity.summary, activity.details].filter(Boolean).join("\n\n");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const canExpand = description.length > 120;
   const photoDialog = useRef<HTMLDialogElement>(null);
 
   return (
@@ -98,7 +137,30 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
           </div>
           <div className="min-w-0 flex-1">
             <h3 className="font-display text-lg font-extrabold leading-snug text-brand-black">{activity.title}</h3>
-            {description && <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-brand-muted">{description}</p>}
+            {description && (
+              <>
+                <p
+                  id={`activity-description-${activity._key}`}
+                  className={`mt-1 whitespace-pre-line text-sm leading-relaxed text-brand-muted ${canExpand && !isExpanded ? "line-clamp-4 sm:line-clamp-none" : ""}`}
+                >
+                  {description}
+                </p>
+                {canExpand && (
+                  <button
+                    type="button"
+                    aria-controls={`activity-description-${activity._key}`}
+                    aria-expanded={isExpanded}
+                    onClick={() => setIsExpanded((expanded) => !expanded)}
+                    className="mt-2 inline-flex items-center gap-1 font-mono text-xs font-bold text-brand-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta sm:hidden"
+                  >
+                    {isExpanded ? "Collapse" : "Expand"}
+                    <svg className={`h-3 w-3 transition-transform ${isExpanded ? "rotate-180" : ""}`} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="m3 6 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                )}
+              </>
+            )}
           </div>
           {(activity.price || activity.priceNote || activity.mapUrl || activity.videoUrl || activity.bookingUrl) && (
             <div className="ml-auto flex shrink-0 items-center gap-2">
@@ -108,8 +170,8 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
                   {activity.priceNote && <p className="mt-0.5 font-mono text-[10px] text-brand-muted">{activity.priceNote}</p>}
                 </div>
               )}
-              {activity.mapUrl && <a href={activity.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Map for ${activity.title}`} title="Open map" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><PinIcon /></a>}
               {activity.videoUrl && <a href={activity.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`Video for ${activity.title}`} title="Open video" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><VideoIcon /></a>}
+              {activity.mapUrl && <a href={activity.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Map for ${activity.title}`} title="Open map" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><PinIcon /></a>}
               {activity.bookingUrl && <a href={activity.bookingUrl} target="_blank" rel="noopener noreferrer" className="rounded-md border border-brand-primary bg-brand-yellow px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-brand-black transition-transform hover:-translate-y-0.5">Book</a>}
             </div>
           )}
