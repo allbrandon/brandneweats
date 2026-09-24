@@ -43,7 +43,11 @@ export default async function CityGuidePage({ params }: PageProps) {
     activities: (day.activities || []).map((activity: any) => ({
       ...activity,
       image: activity.image?.asset
-        ? { url: urlForImage(activity.image).width(320).height(320).url(), alt: activity.image.alt }
+        ? {
+            url: urlForImage(activity.image).width(320).height(320).url(),
+            fullUrl: urlForImage(activity.image).width(1400).url(),
+            alt: activity.image.alt,
+          }
         : null,
     })),
   }));
