@@ -93,7 +93,7 @@ export async function getCityGuide(country: string, city: string) {
       days[]{
         _key, tabTitle, heading, description,
         activities[]{
-          _key, time, title, summary, details, price, priceNote, mapUrl, bookingUrl,
+          _key, time, title, summary, details, price, priceNote, mapUrl, videoUrl, bookingUrl,
           "image": image{asset->{_id, url}, alt, hotspot, crop}
         }
       }

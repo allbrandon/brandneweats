@@ -42,8 +42,8 @@ export const cityGuideType = defineType({
               fields: [
                 defineField({ name: "time", title: "Time", type: "string", placeholder: "08:00 AM – 09:30 AM" }),
                 defineField({ name: "title", title: "Activity name", type: "string", validation: (rule) => rule.required() }),
-                defineField({ name: "summary", title: "Short description", type: "text", rows: 2 }),
-                defineField({ name: "details", title: "Expanded description", type: "text", rows: 4 }),
+                defineField({ name: "summary", title: "Description", type: "text", rows: 6 }),
+                defineField({ name: "details", title: "Additional description (optional)", type: "text", rows: 4 }),
                 defineField({
                   name: "image", title: "Activity image", type: "image", options: { hotspot: true },
                   fields: [{ name: "alt", title: "Alternative text", type: "string" }],
@@ -51,6 +51,11 @@ export const cityGuideType = defineType({
                 defineField({ name: "price", title: "Price label", type: "string", placeholder: "55,000 VND" }),
                 defineField({ name: "priceNote", title: "Price note", type: "string", placeholder: "~$2.20 USD" }),
                 defineField({ name: "mapUrl", title: "Map link (optional)", type: "url", validation: (rule) => rule.uri({ scheme: ["http", "https"] }) }),
+                defineField({
+                  name: "videoUrl", title: "Video link (optional)", type: "url",
+                  description: "A video icon appears beside the map icon when this link is filled in.",
+                  validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
+                }),
                 defineField({
                   name: "bookingUrl", title: "Booking link (optional)", type: "url",
                   description: "A Book button appears only when this link is filled in.",

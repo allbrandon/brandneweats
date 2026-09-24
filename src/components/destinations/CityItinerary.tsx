@@ -12,6 +12,7 @@ export interface Activity {
   price?: string;
   priceNote?: string;
   mapUrl?: string;
+  videoUrl?: string;
   bookingUrl?: string;
   image?: { url: string; alt?: string } | null;
 }
@@ -65,9 +66,7 @@ export default function CityItinerary({ days }: { days: ItineraryDay[] }) {
 }
 
 function ActivityCard({ activity, index }: { activity: Activity; index: number }) {
-  const [expanded, setExpanded] = useState(false);
-  const detailsId = `activity-${activity._key}`;
-  const canExpand = Boolean(activity.details || (activity.summary?.length ?? 0) > 130);
+  const description = [activity.summary, activity.details].filter(Boolean).join("\n\n");
 
   return (
     <article>
@@ -90,34 +89,18 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
           </div>
           <div className="min-w-0 flex-1">
             <h3 className="font-display text-lg font-extrabold leading-snug text-brand-black">{activity.title}</h3>
-            {(activity.summary || activity.details) && (
-              <p id={detailsId} className={`mt-1 text-sm leading-relaxed text-brand-muted whitespace-pre-line ${expanded ? "" : "line-clamp-2"}`}>
-                {activity.summary || activity.details}
-                {expanded && activity.summary && activity.details && `\n\n${activity.details}`}
-              </p>
-            )}
-            {canExpand && (
-              <button
-                type="button"
-                aria-expanded={expanded}
-                aria-controls={detailsId}
-                onClick={() => setExpanded(!expanded)}
-                className="mt-2 inline-flex items-center gap-1.5 font-mono text-xs font-bold text-brand-primary underline decoration-brand-yellow decoration-2 underline-offset-4 hover:text-brand-terracotta focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"
-              >
-                {expanded ? "Collapse" : "Expand"}
-                <svg className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-180" : ""}`} viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 6 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </button>
-            )}
+            {description && <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-brand-muted">{description}</p>}
           </div>
-          {(activity.price || activity.priceNote || activity.mapUrl || activity.bookingUrl) && (
-            <div className="flex shrink-0 items-center gap-2 sm:ml-auto">
+          {(activity.price || activity.priceNote || activity.mapUrl || activity.videoUrl || activity.bookingUrl) && (
+            <div className="ml-auto flex shrink-0 items-center gap-2">
               {(activity.price || activity.priceNote) && (
                 <div className="mr-1 text-left sm:w-28 sm:text-right">
                   {activity.price && <p className="font-mono text-xs font-bold text-brand-black">{activity.price}</p>}
                   {activity.priceNote && <p className="mt-0.5 font-mono text-[10px] text-brand-muted">{activity.priceNote}</p>}
                 </div>
               )}
-              {activity.mapUrl && <a href={activity.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Map for ${activity.title}`} className="inline-flex h-9 items-center gap-1.5 rounded-md bg-[#f0eee8] px-2.5 font-mono text-xs font-bold text-brand-black hover:bg-brand-yellow"><PinIcon />Map</a>}
+              {activity.mapUrl && <a href={activity.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Map for ${activity.title}`} title="Open map" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><PinIcon /></a>}
+              {activity.videoUrl && <a href={activity.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`Video for ${activity.title}`} title="Open video" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><VideoIcon /></a>}
               {activity.bookingUrl && <a href={activity.bookingUrl} target="_blank" rel="noopener noreferrer" className="rounded-md border border-brand-primary bg-brand-yellow px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-brand-black transition-transform hover:-translate-y-0.5">Book</a>}
             </div>
           )}
@@ -133,4 +116,8 @@ function ClockIcon() {
 
 function PinIcon() {
   return <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 8c0 4.25-6 9-6 9S4 12.25 4 8a6 6 0 1 1 12 0Z" stroke="currentColor" strokeWidth="1.6" /><circle cx="10" cy="8" r="2" stroke="currentColor" strokeWidth="1.6" /></svg>;
+}
+
+function VideoIcon() {
+  return <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="m8 7 5 3-5 3V7Z" fill="currentColor" /></svg>;
 }

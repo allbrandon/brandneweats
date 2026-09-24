@@ -71,7 +71,7 @@ The Studio is mounted in the Next.js site at `/studio`. Log in with your Sanity 
 ### Creating a city itinerary
 
 1. In Studio, create a **City Guide**. Set its city, URL slug, country, page heading and optional intro, budget and hero image.
-2. Add itinerary days and activities. Each activity can have its own time, photo, description, expanded details, price and map link.
+2. Add itinerary days and activities. Each activity can have its own time, photo, full description, price, map link and video link.
 3. Add a **Booking link** only for activities that need a Book button. Leaving it empty hides the button.
 4. Open the matching **Destination**, find the city card under **Explore Cities**, and select its City Guide. That card will then link to `/destinations/<country>/<city>`.
 
