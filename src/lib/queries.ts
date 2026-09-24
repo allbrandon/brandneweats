@@ -77,6 +77,31 @@ export async function getAllDestinations() {
   );
 }
 
+export async function getAllCityGuidePaths() {
+  return client.fetch(groq`*[_type == "cityGuide" && defined(slug.current) && defined(destination->slug.current)] {
+    "city": slug.current,
+    "country": destination->slug.current
+  }`);
+}
+
+export async function getCityGuide(country: string, city: string) {
+  return client.fetch(
+    groq`*[_type == "cityGuide" && slug.current == $city && destination->slug.current == $country][0] {
+      _id, city, title, intro, duration, budget, heroCaption,
+      "heroImage": heroImage{asset->{_id, url}, alt, hotspot, crop},
+      "destination": destination->{name, slug},
+      days[]{
+        _key, tabTitle, heading, description,
+        activities[]{
+          _key, time, title, summary, details, price, priceNote, mapUrl, bookingUrl,
+          "image": image{asset->{_id, url}, alt, hotspot, crop}
+        }
+      }
+    }`,
+    { country, city }
+  );
+}
+
 export async function getDestinationBySlug(slug: string) {
   return client.fetch(
     groq`*[_type == "destination" && slug.current == $slug][0] {
@@ -90,6 +115,7 @@ export async function getDestinationBySlug(slug: string) {
       "cities": cities[]{
         name,
         isMustSee,
+        "guideSlug": guide->slug.current,
         "image": image{ asset->{_id, url}, alt, hotspot, crop }
       },
       "backgroundImage": backgroundImage{

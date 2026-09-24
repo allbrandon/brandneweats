@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getAllPostSlugs } from "@/lib/queries";
+import { getAllCityGuidePaths, getAllPostSlugs } from "@/lib/queries";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://brandneweats.com";
@@ -27,5 +27,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Sanity not configured yet
   }
 
-  return [...staticRoutes, ...postRoutes];
+  let cityRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const guides = await getAllCityGuidePaths();
+    cityRoutes = guides.map((guide: { country: string; city: string }) => ({
+      url: `${siteUrl}/destinations/${guide.country}/${guide.city}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // Keep the static sitemap available if Sanity cannot be reached.
+  }
+
+  return [...staticRoutes, ...postRoutes, ...cityRoutes];
 }

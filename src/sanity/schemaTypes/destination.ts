@@ -72,6 +72,10 @@ export const destinationType = defineType({
             fields: [{ name: "alt", type: "string", title: "Alt text" }],
           }),
           defineField({ name: "isMustSee", title: "Mark as Must-See?", type: "boolean", initialValue: false }),
+          defineField({
+            name: "guide", title: "City Guide", type: "reference", to: [{ type: "cityGuide" }],
+            description: "Choose a city guide to make this card open its itinerary page.",
+          }),
         ],
         preview: { select: { title: "name", media: "image" } },
       }],

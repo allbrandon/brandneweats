@@ -1,13 +1,13 @@
 # BrandNewEats
 
-Travel Vietnam & Asia Like a Local — built with Next.js 14, Tailwind CSS, and Sanity CMS.
+Travel Vietnam & Asia Like a Local — built with Next.js 16, Tailwind CSS, and Sanity CMS.
 
 ## Tech Stack
 
-- **Next.js 14** (App Router, SSG)
+- **Next.js 16** (App Router, SSG)
 - **TypeScript**
 - **Tailwind CSS**
-- **Sanity CMS** (standalone Studio in `/studio/` directory)
+- **Sanity CMS** (Studio at `/studio` in the Next.js site)
 - **Vercel** (hosting)
 
 ---
@@ -54,27 +54,28 @@ npm run dev
 
 Site: [http://localhost:3000](http://localhost:3000)
 
-**Sanity Studio (in a separate terminal):**
-```bash
-cd studio
-cp .env.example .env
-# fill in your project ID and dataset
-npx sanity@latest dev
-```
-
-Studio: [http://localhost:3333](http://localhost:3333)
+**Sanity Studio:** [http://localhost:3000/studio](http://localhost:3000/studio)
 
 ---
 
 ## Sanity Studio
 
-The Studio lives in the `studio/` directory and runs separately. Log in with your Sanity account.
-
-> **Why separate?** Sanity Studio requires React 19, while Next.js 14 uses React 18. Running them as separate processes avoids the version conflict.
+The Studio is mounted in the Next.js site at `/studio`. Log in with your Sanity account. The `studio/` directory also contains an older standalone configuration.
 
 **Schemas:**
 - **Post** — title, slug, status (draft/published), hero image, excerpt, content (Portable Text), tags, reading time, destination, SEO fields
 - **Tag** — name, slug
+- **Destination** — country overview and city cards
+- **City Guide** — reusable city itinerary pages with day tabs and activities
+
+### Creating a city itinerary
+
+1. In Studio, create a **City Guide**. Set its city, URL slug, country, page heading and optional intro, budget and hero image.
+2. Add itinerary days and activities. Each activity can have its own time, photo, description, expanded details, price and map link.
+3. Add a **Booking link** only for activities that need a Book button. Leaving it empty hides the button.
+4. Open the matching **Destination**, find the city card under **Explore Cities**, and select its City Guide. That card will then link to `/destinations/<country>/<city>`.
+
+The Hanoi starter itinerary is already in Sanity. Its images and expanded notes are placeholders to replace in Studio.
 
 ---
 

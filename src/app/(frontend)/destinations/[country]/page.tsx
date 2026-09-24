@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import PostCard from "@/components/blog/PostCard";
 import PageBackground from "@/components/PageBackground";
 import { getPostsByDestination, getAllDestinations, getDestinationBySlug } from "@/lib/queries";
@@ -145,12 +146,8 @@ export default async function DestinationCountryPage({ params }: PageProps) {
                       : null;
                     const rotations = [-1.8, 1.2, -0.6, 1.6, -1.1, 0.5];
                     const rotate = rotations[i % rotations.length];
-                    return (
-                      <div
-                        key={i}
-                        className="relative bg-white border border-gray-300 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-200 cursor-default"
-                        style={{ transform: `rotate(${rotate}deg)` }}
-                      >
+                    const card = (
+                      <>
                         {city.isMustSee && (
                           <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 bg-brand-yellow px-3 py-0.5 font-mono text-[9px] uppercase tracking-widest text-brand-black shadow-sm border border-yellow-400">
                             Must-see
@@ -176,6 +173,17 @@ export default async function DestinationCountryPage({ params }: PageProps) {
                         <p className="font-mono text-sm text-center py-3 px-2 text-brand-black">
                           {city.name}
                         </p>
+                      </>
+                    );
+                    const cardClassName = `relative block bg-white border border-gray-300 shadow-md transition-all duration-200 ${city.guideSlug ? "hover:shadow-xl hover:scale-105" : "cursor-default"}`;
+                    const cardStyle = { transform: `rotate(${rotate}deg)` };
+                    return city.guideSlug ? (
+                      <Link key={i} href={`/destinations/${country}/${city.guideSlug}`} className={cardClassName} style={cardStyle}>
+                        {card}
+                      </Link>
+                    ) : (
+                      <div key={i} className={cardClassName} style={cardStyle}>
+                        {card}
                       </div>
                     );
                   })}
