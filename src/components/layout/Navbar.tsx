@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 interface Destination {
   name: string;
   slug: { current: string };
+  cities?: { name: string; guideSlug?: string | null }[];
 }
 
 interface NavbarProps {
@@ -51,7 +52,7 @@ export default function Navbar({ destinations = [] }: NavbarProps) {
             >
               Destinations
               <svg
-                className="w-3 h-3 transition-transform group-hover:rotate-180"
+                className="w-3 h-3 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -60,26 +61,38 @@ export default function Navbar({ destinations = [] }: NavbarProps) {
               </svg>
             </Link>
 
-            {/* Dropdown — shown on hover via group-hover */}
-            <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded shadow-md min-w-40 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150">
-              {destinations.length > 0 ? (
-                destinations.map((dest) => (
+            {/* Dropdown — shown on hover or keyboard focus */}
+            <div className="absolute top-full left-0 pt-2 min-w-40 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150">
+              <div className="bg-white border border-gray-200 rounded shadow-md overflow-hidden">
+                {destinations.length > 0 ? (
+                  destinations.map((dest) => (
+                    <div key={dest.slug.current}>
+                      <Link
+                        href={`/destinations/${dest.slug.current}`}
+                        className="block px-4 py-2 font-mono text-sm hover:bg-brand-yellow"
+                      >
+                        {dest.name}
+                      </Link>
+                      {dest.cities?.filter((city) => city.guideSlug).map((city) => (
+                        <Link
+                          key={city.guideSlug}
+                          href={`/destinations/${dest.slug.current}/${city.guideSlug}`}
+                          className="block pl-8 pr-4 py-2 font-mono text-sm font-normal hover:bg-brand-yellow"
+                        >
+                          {city.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ))
+                ) : (
                   <Link
-                    key={dest.slug.current}
-                    href={`/destinations/${dest.slug.current}`}
+                    href="/destinations"
                     className="block px-4 py-2 font-mono text-sm hover:bg-brand-yellow"
                   >
-                    {dest.name}
+                    View all
                   </Link>
-                ))
-              ) : (
-                <Link
-                  href="/destinations"
-                  className="block px-4 py-2 font-mono text-sm hover:bg-brand-yellow"
-                >
-                  View all
-                </Link>
-              )}
+                )}
+              </div>
             </div>
           </li>
 
@@ -146,14 +159,25 @@ function MobileMenu({ pathname, destinations }: { pathname: string; destinations
             </Link>
           ))}
           {destinations.map((dest) => (
-            <Link
-              key={dest.slug.current}
-              href={`/destinations/${dest.slug.current}`}
-              className="block px-10 py-2 font-mono text-sm text-brand-black border-b border-yellow-300"
-              onClick={() => setOpen(false)}
-            >
-              — {dest.name}
-            </Link>
+            <div key={dest.slug.current}>
+              <Link
+                href={`/destinations/${dest.slug.current}`}
+                className="block px-10 py-2 font-mono text-sm text-brand-black border-b border-yellow-300"
+                onClick={() => setOpen(false)}
+              >
+                — {dest.name}
+              </Link>
+              {dest.cities?.filter((city) => city.guideSlug).map((city) => (
+                <Link
+                  key={city.guideSlug}
+                  href={`/destinations/${dest.slug.current}/${city.guideSlug}`}
+                  className="block pl-16 pr-6 py-2 font-mono text-sm text-brand-black border-b border-yellow-300"
+                  onClick={() => setOpen(false)}
+                >
+                  {city.name}
+                </Link>
+              ))}
+            </div>
           ))}
           <Link
             href="/contact"

@@ -1,22 +1,26 @@
 import Link from "next/link";
 import Image from "next/image";
 import PostCard from "@/components/blog/PostCard";
+import ItineraryCard from "@/components/destinations/ItineraryCard";
 import PageBackground from "@/components/PageBackground";
-import { getLatestPosts, getSiteSettings } from "@/lib/queries";
+import { getLatestCityGuides, getLatestPosts, getSiteSettings } from "@/lib/queries";
 import { urlForImage } from "@/lib/sanity.image";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
   let latestPosts: any[] = [];
+  let latestGuides: any[] = [];
   let settings: any = null;
   try {
-    [latestPosts, settings] = await Promise.all([
+    [latestPosts, latestGuides, settings] = await Promise.all([
       getLatestPosts(3),
+      getLatestCityGuides(3),
       getSiteSettings(),
     ]);
   } catch {
     latestPosts = [];
+    latestGuides = [];
   }
 
   const heroImageUrl = settings?.heroImage?.asset
@@ -84,6 +88,22 @@ export default async function HomePage() {
       </section>
 
       <hr className="border-gray-200 max-w-4xl mx-auto" />
+
+      {/* Latest Itineraries */}
+      {latestGuides.length > 0 && (
+        <section className="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+          <h2 className="font-mono font-bold text-2xl text-brand-black mb-8">
+            Latest Itineraries
+          </h2>
+          <div className="space-y-8 px-1 py-2">
+            {latestGuides.map((guide) => (
+              <ItineraryCard key={guide._id} guide={guide} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {latestGuides.length > 0 && <hr className="border-gray-200 max-w-4xl mx-auto" />}
 
       {/* Latest Blog Posts */}
       <section className="max-w-6xl mx-auto px-6 py-12">

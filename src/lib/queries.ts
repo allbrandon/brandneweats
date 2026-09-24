@@ -72,6 +72,7 @@ export async function getAllDestinations() {
       name,
       slug,
       tagline,
+      "cities": cities[]{name, "guideSlug": guide->slug.current},
       "coverImage": coverImage{ asset->{_id, url}, alt, hotspot, crop }
     }`
   );
@@ -82,6 +83,16 @@ export async function getAllCityGuidePaths() {
     "city": slug.current,
     "country": destination->slug.current
   }`);
+}
+
+export async function getLatestCityGuides(count: number = 3) {
+  return client.fetch(
+    groq`*[_type == "cityGuide" && defined(slug.current) && defined(destination->slug.current)] | order(_createdAt desc)[0...${count}] {
+      _id, city, slug, title, intro, duration,
+      "heroImage": heroImage{asset->{_id, url}, alt, hotspot, crop},
+      "destination": destination->{name, slug, "coverImage": coverImage{asset->{_id, url}, alt, hotspot, crop}}
+    }`
+  );
 }
 
 export async function getCityGuide(country: string, city: string) {
