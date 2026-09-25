@@ -22,6 +22,8 @@ export interface ArrivalEssential {
   badge?: string;
   title: string;
   description?: string;
+  promoCode?: string;
+  promoOffer?: string;
   actionLabel?: string;
   actionUrl?: string;
 }
@@ -119,8 +121,14 @@ export default function ArrivalGuide({ arrival }: { arrival: ArrivalContent }) {
                 </div>
                 <h4 className="font-display text-lg font-extrabold leading-tight text-brand-black">{item.title}</h4>
                 {item.description && <p className="mt-3 flex-1 font-body text-[15px] leading-relaxed text-brand-muted">{item.description}</p>}
+                {item.promoCode && item.promoOffer && (
+                  <div className="mt-4 flex max-w-full self-start overflow-hidden rounded-md border border-brand-black font-mono text-[11px] font-bold leading-tight shadow-[2px_2px_0_rgba(26,26,26,0.8)]">
+                    <span className="min-w-0 break-all bg-brand-yellow px-2.5 py-2 text-brand-black select-all">{item.promoCode}</span>
+                    <span className="shrink-0 bg-brand-black px-2.5 py-2 text-white">{item.promoOffer}</span>
+                  </div>
+                )}
                 {item.actionUrl && (
-                  <a href={item.actionUrl} target="_blank" rel="noopener noreferrer" className="mt-6 rounded-md border-2 border-brand-black bg-brand-yellow px-3 py-2 text-center font-mono text-[11px] font-bold uppercase tracking-wide text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta">
+                  <a href={item.actionUrl} target="_blank" rel="noopener noreferrer" className={`${item.promoCode && item.promoOffer ? "mt-4" : "mt-6"} rounded-md border-2 border-brand-black bg-brand-yellow px-3 py-2 text-center font-mono text-[11px] font-bold uppercase tracking-wide text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta`}>
                     {item.actionLabel || "Learn more"} ↗
                   </a>
                 )}

@@ -107,7 +107,7 @@ export async function getCityGuide(country: string, city: string) {
           "image": image{asset->{_id, url}, alt, hotspot, crop}
         },
         essentialsHeading, essentialsNote,
-        essentials[]{_key, icon, badge, title, description, actionLabel, actionUrl}
+        essentials[]{_key, icon, badge, title, description, promoCode, promoOffer, actionLabel, actionUrl}
       },
       days[]{
         _key, tabTitle, heading, description,
