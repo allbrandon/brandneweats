@@ -45,7 +45,7 @@ export default function ContactForm() {
           type="text"
           required
           placeholder="sir durian"
-          className="w-full border border-gray-300 rounded px-4 py-3 font-mono text-base bg-white focus:outline-none focus:ring-2 focus:ring-brand-yellow"
+          className="w-full border border-gray-300 rounded px-4 py-3 font-body text-base bg-white focus:outline-none focus:ring-2 focus:ring-brand-yellow"
         />
       </div>
 
@@ -59,7 +59,7 @@ export default function ContactForm() {
           type="email"
           required
           placeholder="sirdurian@eats.com"
-          className="w-full border border-gray-300 rounded px-4 py-3 font-mono text-base bg-white focus:outline-none focus:ring-2 focus:ring-brand-yellow"
+          className="w-full border border-gray-300 rounded px-4 py-3 font-body text-base bg-white focus:outline-none focus:ring-2 focus:ring-brand-yellow"
         />
       </div>
 
@@ -73,7 +73,7 @@ export default function ContactForm() {
           required
           rows={5}
           placeholder="hi, it's nice to meet you!"
-          className="w-full border border-gray-300 rounded px-4 py-3 font-mono text-base bg-white focus:outline-none focus:ring-2 focus:ring-brand-yellow resize-y"
+          className="w-full border border-gray-300 rounded px-4 py-3 font-body text-base bg-white focus:outline-none focus:ring-2 focus:ring-brand-yellow resize-y"
         />
       </div>
 

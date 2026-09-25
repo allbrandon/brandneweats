@@ -46,7 +46,7 @@ export default async function HomePage() {
           <h1 className="font-mono font-bold text-4xl md:text-5xl leading-tight text-brand-black mb-5">
             {heroHeading}
           </h1>
-          <p className="font-mono text-base text-brand-black mb-5 leading-relaxed">
+          <p className="font-body text-base text-brand-black mb-5 leading-relaxed">
             {heroSubtext}
           </p>
           <p className="font-mono font-bold text-base text-brand-black mb-8">
@@ -155,7 +155,7 @@ export default async function HomePage() {
               Hi, I&apos;m{" "}
               <span className="bg-brand-yellow px-1">{aboutName}</span>!
             </h2>
-            <p className="font-mono text-base text-brand-black leading-relaxed">
+            <p className="font-body text-base text-brand-black leading-relaxed">
               {aboutBio}
             </p>
           </div>

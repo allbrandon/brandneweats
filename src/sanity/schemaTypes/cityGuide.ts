@@ -27,6 +27,72 @@ export const cityGuideType = defineType({
     }),
     defineField({ name: "heroCaption", title: "Image caption", type: "string" }),
     defineField({
+      name: "arrival", title: "Day 0 · Arrival", type: "object",
+      description: "Optional arrival tab shown before Day 1. Hotels and pre-trip cards can be added, removed, and reordered here.",
+      fields: [
+        defineField({ name: "heading", title: "Page heading", type: "string", initialValue: "Getting Here & Settling In" }),
+        defineField({ name: "description", title: "Introduction", type: "text", rows: 4 }),
+        defineField({ name: "staysHeading", title: "Accommodation section heading", type: "string", initialValue: "Where I'd Stay" }),
+        defineField({ name: "staysIntro", title: "Accommodation introduction", type: "string" }),
+        defineField({ name: "staysNote", title: "Accommodation price note", type: "string" }),
+        defineField({
+          name: "stays", title: "Places to stay", type: "array",
+          of: [defineArrayMember({
+            name: "stay", title: "Place to stay", type: "object",
+            fields: [
+              defineField({ name: "tier", title: "Budget tag", type: "string", placeholder: "Mid-range" }),
+              defineField({ name: "location", title: "Location tag", type: "string", placeholder: "Old Quarter" }),
+              defineField({ name: "name", title: "Name", type: "string", validation: (rule) => rule.required() }),
+              defineField({ name: "area", title: "Area", type: "string", placeholder: "Old Quarter · Hoàn Kiếm" }),
+              defineField({ name: "description", title: "Description", type: "text", rows: 4 }),
+              defineField({ name: "bestFor", title: "Best for", type: "string" }),
+              defineField({ name: "price", title: "Price label", type: "string", placeholder: "$75–$110 / night" }),
+              defineField({ name: "priceNote", title: "Price note", type: "string", placeholder: "USD" }),
+              defineField({
+                name: "image", title: "Image", type: "image", options: { hotspot: true },
+                fields: [{ name: "alt", title: "Alternative text", type: "string" }],
+              }),
+              defineField({ name: "bookingUrl", title: "Booking link (optional)", type: "url", validation: (rule) => rule.uri({ scheme: ["http", "https"] }) }),
+              defineField({ name: "videoUrl", title: "Video link (optional)", type: "url",
+                description: "A video icon appears on the hotel card when this link is filled in.",
+                validation: (rule) => rule.uri({ scheme: ["http", "https"] }) }),
+            ],
+            preview: { select: { title: "name", subtitle: "tier", media: "image" } },
+          })],
+        }),
+        defineField({ name: "essentialsHeading", title: "Pre-trip section heading", type: "string", initialValue: "Book Before You Fly" }),
+        defineField({ name: "essentialsNote", title: "Pre-trip section note", type: "string" }),
+        defineField({
+          name: "essentials", title: "Pre-trip cards", type: "array",
+          description: "Add, remove, or reorder any pre-trip item. The action button appears only when a link is provided.",
+          of: [defineArrayMember({
+            name: "essential", title: "Pre-trip card", type: "object",
+            fields: [
+              defineField({
+                name: "icon", title: "Icon", type: "string", initialValue: "spark",
+                options: { list: [
+                  { title: "Spark", value: "spark" },
+                  { title: "Flight", value: "flight" },
+                  { title: "Shield", value: "shield" },
+                  { title: "Car", value: "car" },
+                  { title: "Phone / eSIM", value: "phone" },
+                  { title: "Ticket", value: "ticket" },
+                  { title: "Bag", value: "bag" },
+                ] },
+              }),
+              defineField({ name: "badge", title: "Optional badge", type: "string", placeholder: "Optional" }),
+              defineField({ name: "title", title: "Title", type: "string", validation: (rule) => rule.required() }),
+              defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
+              defineField({ name: "actionLabel", title: "Button label", type: "string", placeholder: "Compare flights" }),
+              defineField({ name: "actionUrl", title: "Button link (optional)", type: "url", validation: (rule) => rule.uri({ scheme: ["http", "https"] }) }),
+            ],
+            preview: { select: { title: "title", subtitle: "badge" } },
+          })],
+        }),
+        defineField({ name: "footerPrompt", title: "Line before Day 1 button", type: "string" }),
+      ],
+    }),
+    defineField({
       name: "days", title: "Itinerary days", type: "array",
       validation: (rule) => rule.min(1).required(),
       of: [defineArrayMember({

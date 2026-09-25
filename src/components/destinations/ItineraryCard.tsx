@@ -61,7 +61,7 @@ export default function ItineraryCard({ guide }: ItineraryCardProps) {
             {guide.title}
           </h3>
           {guide.intro && (
-            <p className="mt-4 font-mono text-sm leading-relaxed text-brand-muted line-clamp-3">
+            <p className="mt-4 font-body text-sm leading-relaxed text-brand-muted line-clamp-3">
               {guide.intro}
             </p>
           )}

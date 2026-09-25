@@ -9,7 +9,7 @@ interface PostBodyProps {
 
 export default function PostBody({ content }: PostBodyProps) {
   return (
-    <article className="max-w-3xl mx-auto px-6 pb-16">
+    <article className="font-body max-w-3xl mx-auto px-6 pb-16">
       <PortableText value={content} components={portableTextComponents} />
     </article>
   );

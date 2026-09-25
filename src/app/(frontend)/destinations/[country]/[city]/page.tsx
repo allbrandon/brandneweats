@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CityItinerary, { type ItineraryDay } from "@/components/destinations/CityItinerary";
+import type { ArrivalContent } from "@/components/destinations/ArrivalGuide";
 import { getAllCityGuidePaths, getCityGuide } from "@/lib/queries";
 import { urlForImage } from "@/lib/sanity.image";
 
@@ -51,6 +52,17 @@ export default async function CityGuidePage({ params }: PageProps) {
         : null,
     })),
   }));
+  const arrival: ArrivalContent | null = guide.arrival
+    ? {
+        ...guide.arrival,
+        stays: (guide.arrival.stays || []).map((stay: any) => ({
+          ...stay,
+          image: stay.image?.asset
+            ? { url: urlForImage(stay.image).width(900).height(700).url(), fullUrl: urlForImage(stay.image).width(1400).url(), alt: stay.image.alt }
+            : null,
+        })),
+      }
+    : null;
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-black">
@@ -65,7 +77,7 @@ export default async function CityGuidePage({ params }: PageProps) {
 
         <header className="max-w-4xl">
           <h1 className="font-display text-4xl font-black uppercase leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">{guide.title}</h1>
-          {guide.intro && <p className="mt-5 max-w-2xl font-mono text-base leading-relaxed text-brand-muted md:text-lg">{guide.intro}</p>}
+          {guide.intro && <p className="mt-5 max-w-2xl font-body text-base leading-relaxed text-brand-muted md:text-lg">{guide.intro}</p>}
           {(guide.duration || guide.budget) && (
             <div className="mt-6 flex flex-wrap gap-2">
               {guide.duration && <span className="rounded-lg border border-[#e8e2d5] bg-white px-3 py-2 font-mono text-xs font-bold shadow-[0_2px_8px_rgba(96,73,0,0.04)]"><span className="mr-2 text-brand-primary" aria-hidden="true">▣</span>Duration: {guide.duration}</span>}
@@ -91,7 +103,7 @@ export default async function CityGuidePage({ params }: PageProps) {
           </figcaption>
         </figure>
 
-        {days.length > 0 && <CityItinerary days={days} />}
+        {(days.length > 0 || arrival) && <CityItinerary days={days} arrival={arrival} />}
       </main>
     </div>
   );

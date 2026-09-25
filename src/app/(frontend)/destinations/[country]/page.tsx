@@ -59,7 +59,7 @@ export default async function DestinationCountryPage({ params }: PageProps) {
           {label}
         </h1>
         {destination?.tagline && (
-          <p className="font-mono text-lg text-brand-muted italic leading-relaxed max-w-md mx-auto">
+          <p className="font-body text-lg text-brand-muted italic leading-relaxed max-w-md mx-auto">
             {destination.tagline}
           </p>
         )}

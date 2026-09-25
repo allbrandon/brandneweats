@@ -22,6 +22,7 @@ const config: Config = {
       fontFamily: {
         mono: ['"Courier Prime"', '"Courier New"', "monospace"],
         display: ["Epilogue", "sans-serif"],
+        body: ["Epilogue", "sans-serif"],
         editorial: ['"Space Grotesk"', "sans-serif"],
       },
     },

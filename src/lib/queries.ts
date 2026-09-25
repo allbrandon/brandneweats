@@ -101,6 +101,14 @@ export async function getCityGuide(country: string, city: string) {
       _id, city, title, intro, duration, budget, heroCaption,
       "heroImage": heroImage{asset->{_id, url}, alt, hotspot, crop},
       "destination": destination->{name, slug},
+      arrival{
+        heading, description, staysHeading, staysIntro, staysNote, footerPrompt,
+        stays[]{_key, tier, location, name, area, description, bestFor, price, priceNote, bookingUrl, videoUrl,
+          "image": image{asset->{_id, url}, alt, hotspot, crop}
+        },
+        essentialsHeading, essentialsNote,
+        essentials[]{_key, icon, badge, title, description, actionLabel, actionUrl}
+      },
       days[]{
         _key, tabTitle, heading, description,
         activities[]{
