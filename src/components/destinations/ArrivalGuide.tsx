@@ -1,5 +1,6 @@
 import PostcardPhoto from "./PostcardPhoto";
 import VideoIcon from "./VideoIcon";
+import TrackedBookingLink from "../TrackedBookingLink";
 
 export interface ArrivalStay {
   _key: string;
@@ -91,9 +92,9 @@ export default function ArrivalGuide({ arrival }: { arrival: ArrivalContent }) {
                       </a>
                     )}
                     {stay.bookingUrl && (
-                      <a href={stay.bookingUrl} target="_blank" rel="noopener noreferrer" className="flex-1 rounded-md border-2 border-brand-black bg-brand-yellow px-3 py-2 text-center font-mono text-xs font-bold uppercase tracking-wider text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta">
+                      <TrackedBookingLink href={stay.bookingUrl} itemName={stay.name} category="stay" target="_blank" rel="noopener noreferrer" className="flex-1 rounded-md border-2 border-brand-black bg-brand-yellow px-3 py-2 text-center font-mono text-xs font-bold uppercase tracking-wider text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta">
                         Book ↗
-                      </a>
+                      </TrackedBookingLink>
                     )}
                   </div>
                 )}
@@ -161,6 +162,9 @@ function EssentialIcon({ name }: { name?: string }) {
       break;
     case "bag":
       paths = <><rect x="4" y="7" width="16" height="14" rx="1" /><path d="M9 7V5a3 3 0 0 1 6 0v2" /></>;
+      break;
+    case "card":
+      paths = <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18M7 15h3" /></>;
       break;
     default:
       paths = <><path d="m12 2 1.8 7.2L21 11l-7.2 1.8L12 20l-1.8-7.2L3 11l7.2-1.8L12 2Z" /></>;

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import ArrivalGuide, { type ArrivalContent } from "./ArrivalGuide";
 import PostcardPhoto from "./PostcardPhoto";
 import VideoIcon from "./VideoIcon";
+import TrackedBookingLink from "../TrackedBookingLink";
 
 export interface Activity {
   _key: string;
@@ -179,7 +180,7 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
               )}
               {activity.videoUrl && <a href={activity.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`Video for ${activity.title}`} title="Open video" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><VideoIcon /></a>}
               {activity.mapUrl && <a href={activity.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Map for ${activity.title}`} title="Open map" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><PinIcon /></a>}
-              {activity.bookingUrl && <a href={activity.bookingUrl} target="_blank" rel="noopener noreferrer" className="rounded-md border border-brand-primary bg-brand-yellow px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-brand-black transition-transform hover:-translate-y-0.5">Book</a>}
+              {activity.bookingUrl && <TrackedBookingLink href={activity.bookingUrl} itemName={activity.title} category="activity" target="_blank" rel="noopener noreferrer" className="rounded-md border border-brand-primary bg-brand-yellow px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-brand-black transition-transform hover:-translate-y-0.5">Book</TrackedBookingLink>}
             </div>
           )}
         </div>

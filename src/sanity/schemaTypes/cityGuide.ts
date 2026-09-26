@@ -78,6 +78,7 @@ export const cityGuideType = defineType({
                   { title: "Phone / eSIM", value: "phone" },
                   { title: "Ticket", value: "ticket" },
                   { title: "Bag", value: "bag" },
+                  { title: "Payment card", value: "card" },
                 ] },
               }),
               defineField({ name: "badge", title: "Optional badge", type: "string", placeholder: "Optional" }),
