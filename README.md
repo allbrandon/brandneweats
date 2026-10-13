@@ -102,6 +102,35 @@ Every time you publish a post, Sanity fires the webhook → Vercel triggers a fu
 
 ---
 
+## Booking click tracking
+
+Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the local and Vercel environments to the
+website's GA4 measurement ID. Booking buttons (hotels, itinerary activities, and
+pre-trip cards) send one `booking_click` event per left/keyboard or middle click.
+Blog links are not included in this custom tracking.
+
+The event includes `item_name`, `item_category`, `link_url`, `page_location`,
+`affiliate_provider`, `affiliate_item`, and `affiliate_placement`. Pre-trip cards
+use `item_category = essential` and `affiliate_placement = pre_trip`. Providers
+are inferred from the destination hostname; unknown providers use the hostname.
+`TrackedBookingLink` also accepts a `provider` override for future shortened links.
+These events measure outbound intent, including the YouTrip information button;
+they do not establish a completed booking or commission.
+
+In GA4 **Admin → Data display → Custom definitions**, register event-scoped
+dimensions for `affiliate_provider`, `affiliate_item`, and `affiliate_placement`.
+To report only pre-trip clicks, filter `Event name = booking_click` and
+`Affiliate placement = pre_trip`, then use Affiliate item and Affiliate provider
+with Event count. Use the built-in Page location and Link URL dimensions for
+source and destination. New custom dimensions can take 24–48 hours to appear in
+reports and do not backfill older events.
+
+After deployment, click a pre-trip button and check GA4 Realtime (or DebugView
+with a debug-enabled browser) for `booking_click` and its parameters. Local
+payload tests and a successful build do not confirm receipt by GA4.
+
+---
+
 ## Adding Your Logo & Photos
 
 - **Logo**: Replace the text logo in `src/components/layout/Navbar.tsx` with `<Image src="/logo.svg" ...>`

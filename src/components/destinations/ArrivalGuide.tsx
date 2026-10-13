@@ -129,9 +129,9 @@ export default function ArrivalGuide({ arrival }: { arrival: ArrivalContent }) {
                   </div>
                 )}
                 {item.actionUrl && (
-                  <a href={item.actionUrl} target="_blank" rel="noopener noreferrer" className={`${item.promoCode && item.promoOffer ? "mt-4" : "mt-6"} rounded-md border-2 border-brand-black bg-brand-yellow px-3 py-2 text-center font-mono text-[11px] font-bold uppercase tracking-wide text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta`}>
+                  <TrackedBookingLink href={item.actionUrl} itemName={item.title.trim()} category="essential" placement="pre_trip" target="_blank" rel="noopener noreferrer" className={`${item.promoCode && item.promoOffer ? "mt-4" : "mt-6"} rounded-md border-2 border-brand-black bg-brand-yellow px-3 py-2 text-center font-mono text-[11px] font-bold uppercase tracking-wide text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta`}>
                     {item.actionLabel || "Learn more"} ↗
-                  </a>
+                  </TrackedBookingLink>
                 )}
               </article>
             ))}
