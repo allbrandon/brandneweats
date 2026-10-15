@@ -72,9 +72,9 @@ export default function ArrivalGuide({ arrival }: { arrival: ArrivalContent }) {
                   {stay.location && <span className="py-1 text-brand-muted">⌖ {stay.location}</span>}
                 </div>
                 {stay.image?.url ? (
-                  <PostcardPhoto image={stay.image} title={stay.name} className="relative aspect-[4/3] overflow-hidden rounded-sm bg-[#f1ebdc]" sizes="(max-width: 768px) 100vw, 33vw" />
+                  <PostcardPhoto image={stay.image} title={stay.name} className="relative aspect-[4/3] overflow-hidden rounded-md bg-[#f1ebdc]" sizes="(max-width: 768px) 100vw, 33vw" />
                 ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center rounded-sm bg-[#f1ebdc] font-mono text-xs uppercase tracking-wider text-brand-muted">Photo to come</div>
+                  <div className="flex aspect-[4/3] items-center justify-center rounded-md bg-[#f1ebdc] font-mono text-xs uppercase tracking-wider text-brand-muted">Photo to come</div>
                 )}
                 <h4 className="mt-4 font-display text-lg font-extrabold leading-tight text-brand-black">{stay.name}</h4>
                 {stay.area && <p className="mt-1 font-mono text-[11px] text-brand-muted">{stay.area}</p>}
