@@ -32,7 +32,7 @@ export default async function HomePage() {
     : null;
 
   const heroHeading = settings?.heroHeading || "Travel Vietnam & Asia Like a Local";
-  const heroSubtext = settings?.heroSubtext || "No more tourist traps. Let me show you the real spots. And equip you with everything you need to know before you go!";
+  const heroSubtext = settings?.heroSubtext;
   const heroTagline = settings?.heroTagline || "Honest guides, itineraries & best eats ONLY.";
   const aboutName = settings?.aboutName || "Brandon";
   const aboutBio = settings?.aboutBio || "A Vietnamese-Australian currently based in both Vietnam and Australia. Since 2025, I quit my job to chase my passions – to travel & create content full time. Travelling to me is about unlocking stories, culture and brand new cuisine.";
@@ -46,9 +46,11 @@ export default async function HomePage() {
           <h1 className="font-mono font-bold text-4xl md:text-5xl leading-tight text-brand-black mb-5">
             {heroHeading}
           </h1>
-          <p className="font-body text-base text-brand-black mb-5 leading-relaxed">
-            {heroSubtext}
-          </p>
+          {heroSubtext && (
+            <p className="font-body text-base text-brand-black mb-5 leading-relaxed">
+              {heroSubtext}
+            </p>
+          )}
           <p className="font-mono font-bold text-base text-brand-black mb-8">
             {heroTagline}
           </p>
