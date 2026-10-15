@@ -38,7 +38,7 @@ export default async function BlogPage() {
         ) : (
           <div className="text-center py-20">
             <p className="font-mono text-gray-500 text-lg">
-              No posts yet. Add your first post in the Sanity Studio.
+              Blogs coming soon!
             </p>
           </div>
         )}

@@ -103,49 +103,29 @@ export default async function HomePage() {
         </section>
       )}
 
-      {latestGuides.length > 0 && <hr className="border-gray-200 max-w-4xl mx-auto" />}
+      {latestGuides.length > 0 && latestPosts.length > 0 && <hr className="border-gray-200 max-w-4xl mx-auto" />}
 
       {/* Latest Blog Posts */}
-      <section className="max-w-6xl mx-auto px-6 py-12">
-        <h2 className="font-mono font-bold text-2xl text-brand-black mb-8">
-          Latest Blog Posts
-        </h2>
-        {latestPosts.length > 0 ? (
+      {latestPosts.length > 0 && (
+        <section className="max-w-6xl mx-auto px-6 py-12">
+          <h2 className="font-mono font-bold text-2xl text-brand-black mb-8">
+            Latest Blog Posts
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {latestPosts.map((post, i) => (
               <PostCard key={post._id} post={post} index={i} />
             ))}
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="bg-white border-2 border-brand-black rounded overflow-hidden"
-              >
-                <div className="aspect-[4/3] bg-gradient-to-br from-yellow-50 to-yellow-200 flex items-end justify-center pb-4">
-                  <span className="font-mono font-bold text-white text-sm uppercase tracking-widest drop-shadow-lg bg-black/30 px-3 py-1">
-                    VIETNAM
-                  </span>
-                </div>
-                <div className="p-4">
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-                  <div className="h-3 bg-gray-100 rounded w-full mb-1" />
-                  <div className="h-3 bg-gray-100 rounded w-2/3" />
-                </div>
-              </div>
-            ))}
+          <div className="text-center mt-10">
+            <Link
+              href="/blog"
+              className="inline-block border-2 border-brand-black font-mono font-bold px-6 py-3 rounded hover:bg-brand-yellow transition-colors"
+            >
+              View All Posts →
+            </Link>
           </div>
-        )}
-        <div className="text-center mt-10">
-          <Link
-            href="/blog"
-            className="inline-block border-2 border-brand-black font-mono font-bold px-6 py-3 rounded hover:bg-brand-yellow transition-colors"
-          >
-            View All Posts →
-          </Link>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* About section */}
       <section className="bg-yellow-50 border-t border-b border-gray-100">
