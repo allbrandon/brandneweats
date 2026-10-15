@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import ArrivalGuide, { type ArrivalContent } from "./ArrivalGuide";
 import PostcardPhoto from "./PostcardPhoto";
-import PhotoCredit, { type PhotoAttribution } from "./PhotoCredit";
+import type { PhotoAttribution } from "./PhotoCredit";
 import VideoIcon from "./VideoIcon";
 import TrackedBookingLink from "../TrackedBookingLink";
 
@@ -227,7 +227,6 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
             </div>
           )}
         </div>
-        {activity.image && <PhotoCredit image={activity.image} />}
       </div>
     </article>
   );
