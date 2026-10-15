@@ -48,12 +48,14 @@ export default async function HomePage() {
           <p className="font-mono font-bold text-base text-brand-black mb-8">
             {heroTagline}
           </p>
-          <Link
-            href="/blog"
-            className="inline-block bg-brand-black text-brand-yellow font-mono font-bold px-6 py-3 rounded hover:opacity-80 transition-opacity"
-          >
-            Read the Blog →
-          </Link>
+          {latestPosts.length > 0 && (
+            <Link
+              href="/blog"
+              className="inline-block bg-brand-black text-brand-yellow font-mono font-bold px-6 py-3 rounded hover:opacity-80 transition-opacity"
+            >
+              Read the Blog →
+            </Link>
+          )}
         </div>
         <div className="flex-1 flex justify-center md:justify-end">
           {heroImageUrl ? (
