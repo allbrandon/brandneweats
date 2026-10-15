@@ -2,6 +2,8 @@
 // a lookalike domain must not determine the provider.
 const providerDomains: Record<string, string> = {
   "klook.com": "Klook",
+  "klook.tpo.li": "Klook",
+  "klook.tp.st": "Klook",
   "agoda.com": "Agoda",
   "airalo.com": "Airalo",
   "travelkon.com.au": "TravelKon",

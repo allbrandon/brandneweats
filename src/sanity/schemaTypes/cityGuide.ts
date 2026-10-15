@@ -1,6 +1,42 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { PinIcon } from "@sanity/icons";
 
+const activityFields = [
+  defineField({ name: "sourceUrl", title: "Original booking page", type: "url" }),
+  defineField({ name: "alternateBookingUrl", title: "Alternative booking link", type: "url" }),
+  defineField({ name: "alternateBookingLabel", title: "Alternative booking label", type: "string" }),
+  defineField({ name: "alternateSourceUrl", title: "Original alternative booking page", type: "url" }),
+  defineField({ name: "time", title: "Time", type: "string", placeholder: "08:00 AM – 09:30 AM" }),
+  defineField({ name: "title", title: "Activity name", type: "string", validation: (rule) => rule.required() }),
+  defineField({ name: "summary", title: "Description", type: "text", rows: 6 }),
+  defineField({ name: "details", title: "Additional description (optional)", type: "text", rows: 4 }),
+  defineField({
+    name: "image", title: "Activity image", type: "image", options: { hotspot: true },
+    fields: [{ name: "alt", title: "Alternative text", type: "string" }],
+  }),
+  defineField({ name: "price", title: "Price label", type: "string", placeholder: "55,000 VND" }),
+  defineField({ name: "priceNote", title: "Price note", type: "string", placeholder: "~$2.20 USD" }),
+  defineField({ name: "mapUrl", title: "Map link (optional)", type: "url", validation: (rule) => rule.uri({ scheme: ["http", "https"] }) }),
+  defineField({
+    name: "videoUrl", title: "Video link (optional)", type: "url",
+    description: "A video icon appears beside the map icon when this link is filled in.",
+    validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
+  }),
+  defineField({
+    name: "bookingUrl", title: "Booking link (optional)", type: "url",
+    description: "A Book button appears only when this link is filled in.",
+    validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
+  }),
+];
+
+function activityMember() {
+  return defineArrayMember({
+    name: "activity", title: "Activity", type: "object",
+    fields: activityFields,
+    preview: { select: { title: "title", subtitle: "time", media: "image" } },
+  });
+}
+
 export const cityGuideType = defineType({
   name: "cityGuide",
   title: "City Guide",
@@ -40,6 +76,8 @@ export const cityGuideType = defineType({
           of: [defineArrayMember({
             name: "stay", title: "Place to stay", type: "object",
             fields: [
+              defineField({ name: "sourceUrl", title: "Original booking page", type: "url" }),
+              defineField({ name: "mapUrl", title: "Map link", type: "url" }),
               defineField({ name: "tier", title: "Budget tag", type: "string", placeholder: "Mid-range" }),
               defineField({ name: "location", title: "Location tag", type: "string", placeholder: "Old Quarter" }),
               defineField({ name: "name", title: "Name", type: "string", validation: (rule) => rule.required() }),
@@ -108,37 +146,16 @@ export const cityGuideType = defineType({
           defineField({ name: "description", title: "Day introduction", type: "text", rows: 2 }),
           defineField({
             name: "activities", title: "Activities", type: "array",
-            of: [defineArrayMember({
-              name: "activity", title: "Activity", type: "object",
-              fields: [
-                defineField({ name: "time", title: "Time", type: "string", placeholder: "08:00 AM – 09:30 AM" }),
-                defineField({ name: "title", title: "Activity name", type: "string", validation: (rule) => rule.required() }),
-                defineField({ name: "summary", title: "Description", type: "text", rows: 6 }),
-                defineField({ name: "details", title: "Additional description (optional)", type: "text", rows: 4 }),
-                defineField({
-                  name: "image", title: "Activity image", type: "image", options: { hotspot: true },
-                  fields: [{ name: "alt", title: "Alternative text", type: "string" }],
-                }),
-                defineField({ name: "price", title: "Price label", type: "string", placeholder: "55,000 VND" }),
-                defineField({ name: "priceNote", title: "Price note", type: "string", placeholder: "~$2.20 USD" }),
-                defineField({ name: "mapUrl", title: "Map link (optional)", type: "url", validation: (rule) => rule.uri({ scheme: ["http", "https"] }) }),
-                defineField({
-                  name: "videoUrl", title: "Video link (optional)", type: "url",
-                  description: "A video icon appears beside the map icon when this link is filled in.",
-                  validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
-                }),
-                defineField({
-                  name: "bookingUrl", title: "Booking link (optional)", type: "url",
-                  description: "A Book button appears only when this link is filled in.",
-                  validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
-                }),
-              ],
-              preview: { select: { title: "title", subtitle: "time", media: "image" } },
-            })],
+            of: [activityMember()],
           }),
         ],
         preview: { select: { title: "tabTitle", subtitle: "heading" } },
       })],
+    }),
+    defineField({
+      name: "bonusActivities", title: "Bonus things to do", type: "array",
+      description: "Optional untimed activities, displayed separately from the numbered days.",
+      of: [activityMember()],
     }),
   ],
   preview: { select: { title: "city", subtitle: "title", media: "heroImage" } },

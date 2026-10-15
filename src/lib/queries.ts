@@ -103,16 +103,20 @@ export async function getCityGuide(country: string, city: string) {
       "destination": destination->{name, slug},
       arrival{
         heading, description, staysHeading, staysIntro, staysNote, footerPrompt,
-        stays[]{_key, tier, location, name, area, description, bestFor, price, priceNote, bookingUrl, videoUrl,
+        stays[]{_key, tier, location, name, area, description, bestFor, price, priceNote, bookingUrl, videoUrl, mapUrl, sourceUrl,
           "image": image{asset->{_id, url}, alt, hotspot, crop}
         },
         essentialsHeading, essentialsNote,
         essentials[]{_key, icon, badge, title, description, promoCode, promoOffer, actionLabel, actionUrl}
       },
+      bonusActivities[]{
+        _key, time, title, summary, details, price, priceNote, mapUrl, videoUrl, bookingUrl, sourceUrl, alternateBookingUrl, alternateBookingLabel, alternateSourceUrl,
+        "image": image{asset->{_id, url}, alt, hotspot, crop}
+      },
       days[]{
         _key, tabTitle, heading, description,
         activities[]{
-          _key, time, title, summary, details, price, priceNote, mapUrl, videoUrl, bookingUrl,
+          _key, time, title, summary, details, price, priceNote, mapUrl, videoUrl, bookingUrl, sourceUrl, alternateBookingUrl, alternateBookingLabel, alternateSourceUrl,
           "image": image{asset->{_id, url}, alt, hotspot, crop}
         }
       }

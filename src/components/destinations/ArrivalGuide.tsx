@@ -14,6 +14,7 @@ export interface ArrivalStay {
   priceNote?: string;
   videoUrl?: string;
   bookingUrl?: string;
+  mapUrl?: string;
   image?: { url: string; fullUrl?: string; alt?: string } | null;
 }
 
@@ -84,8 +85,13 @@ export default function ArrivalGuide({ arrival }: { arrival: ArrivalContent }) {
                     {stay.price && <strong>{stay.price}</strong>}{stay.priceNote && <span className="ml-1 text-brand-muted">({stay.priceNote})</span>}
                   </p>
                 )}
-                {(stay.videoUrl || stay.bookingUrl) && (
+                {(stay.videoUrl || stay.bookingUrl || stay.mapUrl) && (
                   <div className="mt-3 flex items-center justify-end gap-2">
+                    {stay.mapUrl && (
+                      <a href={stay.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Map for ${stay.name}`} title="Open map" className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 8c0 4.25-6 9-6 9S4 12.25 4 8a6 6 0 1 1 12 0Z" stroke="currentColor" strokeWidth="1.6" /><circle cx="10" cy="8" r="2" stroke="currentColor" strokeWidth="1.6" /></svg>
+                      </a>
+                    )}
                     {stay.videoUrl && (
                       <a href={stay.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`Video for ${stay.name}`} title="Open video" className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
                         <VideoIcon />

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import CityItinerary, { type ItineraryDay } from "@/components/destinations/CityItinerary";
+import CityItinerary, { type Activity, type ItineraryDay } from "@/components/destinations/CityItinerary";
 import type { ArrivalContent } from "@/components/destinations/ArrivalGuide";
 import { getAllCityGuidePaths, getCityGuide } from "@/lib/queries";
 import { urlForImage } from "@/lib/sanity.image";
@@ -39,19 +39,17 @@ export default async function CityGuidePage({ params }: PageProps) {
   const heroImageUrl = guide.heroImage?.asset
     ? urlForImage(guide.heroImage).width(1500).height(900).url()
     : null;
+  const mapActivity = (activity: any): Activity => ({
+    ...activity,
+    image: activity.image?.asset
+      ? { url: urlForImage(activity.image).width(320).height(320).url(), fullUrl: urlForImage(activity.image).width(1400).url(), alt: activity.image.alt }
+      : null,
+  });
   const days: ItineraryDay[] = (guide.days || []).map((day: any) => ({
     ...day,
-    activities: (day.activities || []).map((activity: any) => ({
-      ...activity,
-      image: activity.image?.asset
-        ? {
-            url: urlForImage(activity.image).width(320).height(320).url(),
-            fullUrl: urlForImage(activity.image).width(1400).url(),
-            alt: activity.image.alt,
-          }
-        : null,
-    })),
+    activities: (day.activities || []).map(mapActivity),
   }));
+  const bonusActivities: Activity[] = (guide.bonusActivities || []).map(mapActivity);
   const arrival: ArrivalContent | null = guide.arrival
     ? {
         ...guide.arrival,
@@ -103,7 +101,7 @@ export default async function CityGuidePage({ params }: PageProps) {
           </figcaption>
         </figure>
 
-        {(days.length > 0 || arrival) && <CityItinerary days={days} arrival={arrival} />}
+        {(days.length > 0 || arrival) && <CityItinerary days={days} arrival={arrival} bonusActivities={bonusActivities} />}
       </main>
     </div>
   );

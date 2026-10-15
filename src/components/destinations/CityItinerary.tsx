@@ -17,6 +17,8 @@ export interface Activity {
   mapUrl?: string;
   videoUrl?: string;
   bookingUrl?: string;
+  alternateBookingUrl?: string;
+  alternateBookingLabel?: string;
   image?: { url: string; fullUrl?: string; alt?: string } | null;
 }
 
@@ -28,14 +30,17 @@ export interface ItineraryDay {
   activities?: Activity[];
 }
 
-export default function CityItinerary({ days, arrival }: { days: ItineraryDay[]; arrival?: ArrivalContent | null }) {
+export default function CityItinerary({ days, arrival, bonusActivities = [] }: { days: ItineraryDay[]; arrival?: ArrivalContent | null; bonusActivities?: Activity[] }) {
   const [selectedDay, setSelectedDay] = useState(0);
   const dayHeadingRef = useRef<HTMLHeadingElement>(null);
   const hasArrival = Boolean(arrival);
-  const tabs = hasArrival ? [{ _key: "arrival", tabTitle: "Arrival" }, ...days] : days;
+  const dayTabs = hasArrival ? [{ _key: "arrival", tabTitle: "Arrival" }, ...days] : days;
+  const tabs = bonusActivities.length ? [...dayTabs, { _key: "bonus", tabTitle: "More things to do" }] : dayTabs;
+  const isBonus = bonusActivities.length > 0 && selectedDay === dayTabs.length;
   const isArrival = hasArrival && selectedDay === 0;
   const day = isArrival ? null : days[selectedDay - (hasArrival ? 1 : 0)];
   const dayNumber = (index: number) => index + (hasArrival ? 0 : 1);
+  const tabLabel = (index: number) => index === dayTabs.length ? "Bonus" : `Day ${dayNumber(index)}`;
 
   const goToDay = (index: number) => {
     setSelectedDay(index);
@@ -59,11 +64,11 @@ export default function CityItinerary({ days, arrival }: { days: ItineraryDay[];
             id={`day-tab-${index}`}
             aria-controls={`day-panel-${index}`}
             aria-selected={selectedDay === index}
-            aria-label={`Day ${dayNumber(index)}: ${item.tabTitle}`}
+            aria-label={`${tabLabel(index)}: ${item.tabTitle}`}
             onClick={() => setSelectedDay(index)}
             className={`min-w-20 flex-1 rounded-md px-2 py-3 font-mono text-sm font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta sm:flex-none sm:px-5 ${selectedDay === index ? "bg-brand-yellow text-brand-black" : "bg-[#f0eee8] text-brand-muted hover:bg-[#e9e4d7]"}`}
           >
-            Day {dayNumber(index)}
+            {tabLabel(index)}
           </button>
         ))}
       </div>
@@ -74,6 +79,15 @@ export default function CityItinerary({ days, arrival }: { days: ItineraryDay[];
             <h2 ref={dayHeadingRef} tabIndex={-1} className="scroll-mt-6 font-display text-3xl font-black uppercase leading-tight tracking-tight text-brand-black outline-none md:text-4xl">{arrival.heading || "Getting Here & Settling In"}</h2>
             {arrival.description && <p className="mt-3 max-w-2xl whitespace-pre-line font-body text-base leading-relaxed text-brand-muted">{arrival.description}</p>}
             <ArrivalGuide arrival={arrival} />
+          </>
+        ) : isBonus ? (
+          <>
+            <p className="mb-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-brand-terracotta">If you have more time</p>
+            <h2 ref={dayHeadingRef} tabIndex={-1} className="scroll-mt-6 font-display text-3xl font-black uppercase leading-tight tracking-tight text-brand-black outline-none md:text-4xl">Bonus things to do</h2>
+            <p className="mt-3 max-w-2xl font-body text-base leading-relaxed text-brand-muted">Untimed extras to fit in if you have more time.</p>
+            <div className="mt-9 space-y-8">
+              {bonusActivities.map((activity, index) => <ActivityCard key={activity._key} activity={activity} index={index} />)}
+            </div>
           </>
         ) : day ? (
           <>
@@ -98,8 +112,8 @@ export default function CityItinerary({ days, arrival }: { days: ItineraryDay[];
                 onClick={() => goToDay(selectedDay - 1)}
                 className="w-full rounded-md border-2 border-brand-black bg-white px-5 py-3 text-left font-mono text-brand-black transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta sm:w-auto"
               >
-                <span className="block text-xs font-bold uppercase tracking-wider">← Previous day</span>
-                <span className="mt-1 block text-xs">Day {dayNumber(selectedDay - 1)}: {tabs[selectedDay - 1].tabTitle}</span>
+                <span className="block text-xs font-bold uppercase tracking-wider">{isBonus ? "← Back to itinerary" : "← Previous day"}</span>
+                <span className="mt-1 block text-xs">{tabLabel(selectedDay - 1)}: {tabs[selectedDay - 1].tabTitle}</span>
               </button>
             )}
             {selectedDay < tabs.length - 1 && (
@@ -108,8 +122,8 @@ export default function CityItinerary({ days, arrival }: { days: ItineraryDay[];
                 onClick={() => goToDay(selectedDay + 1)}
                 className={`ml-auto w-full rounded-md border-2 px-5 py-3 text-left font-mono transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-terracotta sm:w-auto ${isArrival ? "border-brand-yellow bg-brand-black text-white" : "border-brand-black bg-brand-yellow text-brand-black"}`}
               >
-                <span className="block text-xs font-bold uppercase tracking-wider">{isArrival ? "Explore Day 1 →" : "Next day →"}</span>
-                {!isArrival && <span className="mt-1 block text-xs">Day {dayNumber(selectedDay + 1)}: {tabs[selectedDay + 1].tabTitle}</span>}
+                <span className="block text-xs font-bold uppercase tracking-wider">{selectedDay + 1 === dayTabs.length ? "Bonus things to do →" : isArrival ? "Explore Day 1 →" : "Next day →"}</span>
+                {!isArrival && <span className="mt-1 block text-xs">{tabLabel(selectedDay + 1)}: {tabs[selectedDay + 1].tabTitle}</span>}
               </button>
             )}
           </nav>
@@ -132,7 +146,7 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
         </p>
       )}
       <div className="rounded-xl border border-[#e8e2d5] bg-white p-3 shadow-[0_6px_18px_rgba(96,73,0,0.08)] md:p-4" style={{ transform: `rotate(${index % 2 ? "0.25" : "-0.2"}deg)` }}>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
           {activity.image?.url ? (
             <PostcardPhoto image={activity.image} title={activity.title} className="relative h-40 w-full shrink-0 overflow-hidden rounded-md bg-[#f1ebdc] sm:h-24 sm:w-24" sizes="(max-width: 640px) 100vw, 96px" />
           ) : (
@@ -170,8 +184,8 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
               </>
             )}
           </div>
-          {(activity.price || activity.priceNote || activity.mapUrl || activity.videoUrl || activity.bookingUrl) && (
-            <div className="ml-auto flex shrink-0 items-center gap-2">
+          {(activity.price || activity.priceNote || activity.mapUrl || activity.videoUrl || activity.bookingUrl || activity.alternateBookingUrl) && (
+            <div className="ml-auto flex max-w-full shrink-0 flex-wrap items-center justify-end gap-2 sm:max-w-48">
               {(activity.price || activity.priceNote) && (
                 <div className="mr-1 text-left sm:w-28 sm:text-right">
                   {activity.price && <p className="font-mono text-xs font-bold text-brand-black">{activity.price}</p>}
@@ -180,6 +194,7 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
               )}
               {activity.videoUrl && <a href={activity.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`Video for ${activity.title}`} title="Open video" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><VideoIcon /></a>}
               {activity.mapUrl && <a href={activity.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`Map for ${activity.title}`} title="Open map" className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#f0eee8] text-brand-black hover:bg-brand-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta"><PinIcon /></a>}
+              {activity.alternateBookingUrl && <TrackedBookingLink href={activity.alternateBookingUrl} itemName={`${activity.title} — ${activity.alternateBookingLabel || "alternative"}`} category="activity" target="_blank" rel="noopener noreferrer" className="rounded-md border border-brand-primary px-3 py-2 font-mono text-xs font-bold text-brand-black">{activity.alternateBookingLabel || "Alternative booking"}</TrackedBookingLink>}
               {activity.bookingUrl && <TrackedBookingLink href={activity.bookingUrl} itemName={activity.title} category="activity" target="_blank" rel="noopener noreferrer" className="rounded-md border border-brand-primary bg-brand-yellow px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-brand-black transition-transform hover:-translate-y-0.5">Book</TrackedBookingLink>}
             </div>
           )}
