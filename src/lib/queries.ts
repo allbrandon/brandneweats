@@ -111,13 +111,13 @@ export async function getCityGuide(country: string, city: string) {
       },
       bonusActivities[]{
         _key, time, title, summary, details, price, priceNote, mapUrl, videoUrl, bookingUrl, sourceUrl, alternateBookingUrl, alternateBookingLabel, alternateSourceUrl,
-        "image": image{asset->{_id, url}, alt, hotspot, crop}
+        "image": image{asset->{_id, url}, alt, hotspot, crop, credit, sourceUrl, license, licenseUrl, creditNote}
       },
       days[]{
         _key, tabTitle, heading, description,
         activities[]{
           _key, time, title, summary, details, price, priceNote, mapUrl, videoUrl, bookingUrl, sourceUrl, alternateBookingUrl, alternateBookingLabel, alternateSourceUrl,
-          "image": image{asset->{_id, url}, alt, hotspot, crop}
+          "image": image{asset->{_id, url}, alt, hotspot, crop, credit, sourceUrl, license, licenseUrl, creditNote}
         }
       }
     }`,

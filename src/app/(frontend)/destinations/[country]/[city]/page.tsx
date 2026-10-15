@@ -42,7 +42,7 @@ export default async function CityGuidePage({ params }: PageProps) {
   const mapActivity = (activity: any): Activity => ({
     ...activity,
     image: activity.image?.asset
-      ? { url: urlForImage(activity.image).width(320).height(320).url(), fullUrl: urlForImage(activity.image).width(1400).url(), alt: activity.image.alt }
+      ? { ...activity.image, url: urlForImage(activity.image).width(320).height(320).url(), fullUrl: urlForImage(activity.image).width(1400).url() }
       : null,
   });
   const days: ItineraryDay[] = (guide.days || []).map((day: any) => ({

@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import ArrivalGuide, { type ArrivalContent } from "./ArrivalGuide";
 import PostcardPhoto from "./PostcardPhoto";
+import PhotoCredit, { type PhotoAttribution } from "./PhotoCredit";
 import VideoIcon from "./VideoIcon";
 import TrackedBookingLink from "../TrackedBookingLink";
 
@@ -19,7 +20,7 @@ export interface Activity {
   bookingUrl?: string;
   alternateBookingUrl?: string;
   alternateBookingLabel?: string;
-  image?: { url: string; fullUrl?: string; alt?: string } | null;
+  image?: ({ url: string; fullUrl?: string; alt?: string } & PhotoAttribution) | null;
 }
 
 export interface ItineraryDay {
@@ -84,7 +85,7 @@ export default function CityItinerary({ days, arrival, bonusActivities = [] }: {
           <>
             <p className="mb-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-brand-terracotta">If you have more time</p>
             <h2 ref={dayHeadingRef} tabIndex={-1} className="scroll-mt-6 font-display text-3xl font-black uppercase leading-tight tracking-tight text-brand-black outline-none md:text-4xl">Bonus things to do</h2>
-            <p className="mt-3 max-w-2xl font-body text-base leading-relaxed text-brand-muted">Untimed extras to fit in if you have more time.</p>
+            <p className="mt-3 max-w-2xl font-body text-base leading-relaxed text-brand-muted">Extras to fit in if you have more time</p>
             <div className="mt-9 space-y-8">
               {bonusActivities.map((activity, index) => <ActivityCard key={activity._key} activity={activity} index={index} />)}
             </div>
@@ -199,6 +200,7 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
             </div>
           )}
         </div>
+        {activity.image && <PhotoCredit image={activity.image} />}
       </div>
     </article>
   );

@@ -12,7 +12,14 @@ const activityFields = [
   defineField({ name: "details", title: "Additional description (optional)", type: "text", rows: 4 }),
   defineField({
     name: "image", title: "Activity image", type: "image", options: { hotspot: true },
-    fields: [{ name: "alt", title: "Alternative text", type: "string" }],
+    fields: [
+      { name: "alt", title: "Alternative text", type: "string" },
+      { name: "credit", title: "Photo credit", type: "string" },
+      { name: "sourceUrl", title: "Photo source", type: "url" },
+      { name: "license", title: "Photo licence", type: "string" },
+      { name: "licenseUrl", title: "Licence URL", type: "url" },
+      { name: "creditNote", title: "Photo note", type: "string" },
+    ],
   }),
   defineField({ name: "price", title: "Price label", type: "string", placeholder: "55,000 VND" }),
   defineField({ name: "priceNote", title: "Price note", type: "string", placeholder: "~$2.20 USD" }),
@@ -127,6 +134,7 @@ export const cityGuideType = defineType({
               defineField({ name: "promoOffer", title: "Offer label (optional)", type: "string",
                 description: "Shown beside the discount code in the promo pill.", placeholder: "15% off" }),
               defineField({ name: "actionLabel", title: "Button label", type: "string", placeholder: "Compare flights" }),
+              defineField({ name: "sourceUrl", title: "Original booking page", type: "url" }),
               defineField({ name: "actionUrl", title: "Button link (optional)", type: "url", validation: (rule) => rule.uri({ scheme: ["http", "https"] }) }),
             ],
             preview: { select: { title: "title", subtitle: "badge" } },

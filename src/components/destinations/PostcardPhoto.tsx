@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+import PhotoCredit, { type PhotoAttribution } from "./PhotoCredit";
 
 interface PostcardPhotoProps {
-  image: { url: string; fullUrl?: string; alt?: string };
+  image: { url: string; fullUrl?: string; alt?: string } & PhotoAttribution;
   title: string;
   className: string;
   sizes: string;
@@ -50,6 +51,7 @@ export default function PostcardPhoto({ image, title, className, sizes }: Postca
           </div>
           <div className="mt-4 px-1 font-mono">
             <p className="text-sm font-bold text-brand-black">{title}</p>
+            <PhotoCredit image={image} />
           </div>
         </div>
       </dialog>
