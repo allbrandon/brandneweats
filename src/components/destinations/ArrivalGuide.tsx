@@ -64,7 +64,7 @@ export default function ArrivalGuide({ arrival }: { arrival: ArrivalContent }) {
             {arrival.stays.map((stay, index) => (
               <article
                 key={stay._key}
-                className="flex min-w-0 flex-col rounded-xl border border-[#cfc5b3] bg-white p-4 shadow-[3px_5px_0_rgba(36,30,22,0.75)]"
+                className="flex min-w-0 flex-col rounded-xl border border-[#cfc5b3] bg-white p-4 shadow-[0_6px_18px_rgba(96,73,0,0.08)]"
                 style={{ transform: `rotate(${index % 2 ? "0.3" : "-0.3"}deg)` }}
               >
                 <div className="mb-3 flex min-h-7 flex-wrap items-start justify-between gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.1em]">
@@ -121,7 +121,7 @@ export default function ArrivalGuide({ arrival }: { arrival: ArrivalContent }) {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {arrival.essentials.map((item) => (
-              <article key={item._key} className="flex flex-col rounded-xl border border-[#cfc5b3] bg-white p-4 shadow-[3px_5px_0_rgba(36,30,22,0.75)]">
+              <article key={item._key} className="flex flex-col rounded-xl border border-[#cfc5b3] bg-white p-4 shadow-[0_6px_18px_rgba(96,73,0,0.08)]">
                 <div className="mb-4 flex items-start justify-between gap-2">
                   <span className="flex h-9 w-9 items-center justify-center rounded-md border border-[#e8e2d5] bg-[#f5f2ea] text-brand-black"><EssentialIcon name={item.icon} /></span>
                   {item.badge && <span className="rounded-full border border-[#d8cfbd] bg-[#f5f2ea] px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-brand-muted">{item.badge}</span>}
