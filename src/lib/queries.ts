@@ -96,7 +96,7 @@ export async function getLatestCityGuides(count: number = 3) {
 }
 
 export async function getCityGuide(country: string, city: string) {
-  return client.fetch(
+  return client.withConfig({ useCdn: false }).fetch(
     groq`*[_type == "cityGuide" && slug.current == $city && destination->slug.current == $country][0] {
       _id, city, title, intro, duration, budget, heroCaption,
       "heroImage": heroImage{asset->{_id, url}, alt, hotspot, crop},
@@ -121,7 +121,8 @@ export async function getCityGuide(country: string, city: string) {
         }
       }
     }`,
-    { country, city }
+    { country, city },
+    { next: { revalidate: 60 } }
   );
 }
 
