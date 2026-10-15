@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ArrivalGuide, { type ArrivalContent } from "./ArrivalGuide";
 import PostcardPhoto from "./PostcardPhoto";
 import PhotoCredit, { type PhotoAttribution } from "./PhotoCredit";
@@ -137,7 +137,33 @@ export default function CityItinerary({ days, arrival, bonusActivities = [] }: {
 function ActivityCard({ activity, index }: { activity: Activity; index: number }) {
   const description = [activity.summary, activity.details].filter(Boolean).join("\n\n");
   const [isExpanded, setIsExpanded] = useState(false);
-  const canExpand = description.length > 120;
+  const [canExpand, setCanExpand] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const element = descriptionRef.current;
+    if (!element) return;
+    const desktop = window.matchMedia("(min-width: 640px)");
+    let active = true;
+    const measure = () => {
+      if (!active) return;
+      const lineHeight = parseFloat(window.getComputedStyle(element).lineHeight);
+      // scrollHeight includes the hidden lines, even while the paragraph is clamped.
+      setCanExpand(!desktop.matches && element.scrollHeight > lineHeight * 4 + 1);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    desktop.addEventListener("change", measure);
+    document.fonts.addEventListener("loadingdone", measure);
+    document.fonts.ready.then(measure);
+    measure();
+    return () => {
+      active = false;
+      observer.disconnect();
+      desktop.removeEventListener("change", measure);
+      document.fonts.removeEventListener("loadingdone", measure);
+    };
+  }, [description]);
 
   return (
     <article>
@@ -163,8 +189,9 @@ function ActivityCard({ activity, index }: { activity: Activity; index: number }
             {description && (
               <>
                 <p
+                  ref={descriptionRef}
                   id={`activity-description-${activity._key}`}
-                  className={`mt-1 whitespace-pre-line font-body text-[15px] leading-relaxed text-brand-muted ${canExpand && !isExpanded ? "line-clamp-4 sm:line-clamp-none" : ""}`}
+                  className={`mt-1 whitespace-pre-line font-body text-[15px] leading-relaxed text-brand-muted ${!isExpanded ? "line-clamp-4 sm:line-clamp-none" : ""}`}
                 >
                   {description}
                 </p>
